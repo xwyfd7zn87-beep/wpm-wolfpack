@@ -1,1 +1,1382 @@
-<!-- placeholder -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoJo Wrap Studio | Powered by WPM — Vehicle Wrap Estimator</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#0B1320;--panel:#111f38;--card:#1a2d52;--gold:#D4AF37;--gold2:#f0cc50;--text:#f0edff;--muted:#8b98b8;--blue:#2a5cad;--green:#22c55e;--border:rgba(212,175,55,0.2);--red:#e74c3c;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.hdr{background:linear-gradient(135deg,#0B1320,#111f38);border-bottom:2px solid var(--gold);padding:14px 28px;display:flex;align-items:center;gap:14px;}
+.logo{font-size:22px;font-weight:900;letter-spacing:2px;color:var(--gold);}.logo span{color:var(--text);}
+.sub{color:var(--muted);font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+.steps{display:flex;background:var(--panel);border-bottom:1px solid var(--border);overflow-x:auto;}
+.step{flex:1;min-width:110px;padding:12px 10px;text-align:center;cursor:pointer;border-bottom:3px solid transparent;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.5px;transition:all .2s;}
+.step.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(212,175,55,.05);}
+.step.done{color:var(--green);border-bottom-color:var(--green);}
+.sn{display:inline-block;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.1);font-size:10px;line-height:20px;margin-right:5px;}
+.step.active .sn{background:var(--gold);color:#0B1320;}.step.done .sn{background:var(--green);color:#0B1320;}
+.main{display:flex;max-width:1300px;margin:0 auto;gap:18px;padding:18px;}
+.left{flex:2;min-width:0;}.right{width:290px;flex-shrink:0;background:var(--panel);border-radius:12px;padding:16px;border:1px solid var(--border);height:fit-content;position:sticky;top:14px;}
+.card{background:var(--panel);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:16px;}
+.ct{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
+select,input[type=text],input[type=number]{width:100%;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 11px;font-size:13px;margin-bottom:9px;outline:none;transition:border-color .2s;}
+select:focus,input:focus{border-color:var(--gold);}select option{background:var(--card);}
+label{display:block;font-size:11px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
+.btn{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-weight:700;font-size:12px;letter-spacing:.5px;transition:all .2s;text-transform:uppercase;}
+.btn-p{background:var(--gold);color:#0B1320;}.btn-p:hover{background:var(--gold2);transform:translateY(-1px);}
+.btn-s{background:transparent;color:var(--gold);border:1px solid var(--gold);}.btn-s:hover{background:rgba(212,175,55,.1);}
+.btn-row{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;}
+.cb{background:var(--card);border:1px solid var(--border);border-radius:7px;color:var(--muted);padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+.cb.sel,.cb:hover{background:rgba(212,175,55,.1);border-color:var(--gold);color:var(--gold);}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.scard{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;transition:all .2s;text-align:center;}
+.scard:hover,.scard.sel{border-color:var(--gold);background:rgba(212,175,55,.08);}
+.sico{font-size:26px;margin-bottom:5px;}.snm{font-weight:700;font-size:13px;margin-bottom:2px;}.sds{font-size:11px;color:var(--muted);}
+.oem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:9px;max-height:390px;overflow-y:auto;padding-right:4px;margin-bottom:12px;}
+.oem-card{background:var(--card);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;overflow:hidden;}
+.oem-card:hover,.oem-card.sel{border-color:var(--gold);}
+.oem-swatch{height:64px;width:100%;display:block;}
+.oem-nm{font-size:11px;font-weight:700;padding:6px 8px 2px;line-height:1.3;}
+.oem-ft{font-size:10px;color:var(--muted);padding:0 8px 7px;text-transform:capitalize;}
+.wrap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:12px;}
+.wrap-card{background:var(--card);border:2px solid var(--border);border-radius:9px;cursor:pointer;transition:all .2s;overflow:hidden;}
+.wrap-card:hover,.wrap-card.sel{border-color:var(--gold);}
+.wrap-swatch{height:52px;width:100%;display:block;}
+.wrap-nm{font-size:10px;font-weight:700;padding:5px 7px 7px;line-height:1.3;}
+.sel-color-panel{background:rgba(212,175,55,.07);border:1px solid var(--gold);border-radius:10px;padding:14px;margin-bottom:12px;}
+.film-row{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;background:var(--card);border-radius:8px;margin-bottom:7px;border:1px solid var(--border);}
+.film-row:last-child{margin-bottom:0;}
+.qrow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.qrow:last-child{border:none;font-weight:700;color:var(--gold);font-size:15px;}
+.badge{display:inline-block;font-size:10px;border-radius:4px;padding:2px 7px;font-weight:700;letter-spacing:.5px;vertical-align:middle;margin-left:5px;}
+.badge-g{background:rgba(34,197,94,.15);color:var(--green);}
+.badge-gold{background:rgba(212,175,55,.15);color:var(--gold);}
+.est-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.est-row:last-child{border:none;}
+.est-big{font-size:28px;font-weight:900;color:var(--gold);text-align:center;margin:10px 0;}
+.pinfo{background:rgba(212,175,55,.1);border:1px solid var(--gold);border-radius:8px;padding:8px 12px;font-size:12px;margin-bottom:9px;}
+.ai-wrap{position:fixed;bottom:20px;right:20px;z-index:1000;}
+.ai-btn{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#b8860b);border:none;cursor:pointer;font-size:22px;box-shadow:0 4px 16px rgba(0,0,0,.5);transition:transform .2s;}
+.ai-btn:hover{transform:scale(1.08);}
+.ai-box{display:none;width:320px;background:var(--panel);border:1px solid var(--gold);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.5);margin-bottom:10px;overflow:hidden;}
+.ai-hdr{background:var(--gold);padding:10px 14px;display:flex;align-items:center;gap:8px;font-weight:700;color:#0B1320;font-size:13px;}
+.ai-msgs{height:240px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.msg{padding:8px 11px;border-radius:10px;font-size:12px;line-height:1.5;max-width:88%;}
+.msg.bot{background:var(--card);border:1px solid var(--border);}
+.msg.usr{background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);align-self:flex-end;}
+.ai-inp{display:flex;border-top:1px solid var(--border);padding:8px;}
+.ai-inp input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px 0 0 8px;color:var(--text);padding:8px 10px;font-size:12px;outline:none;margin-bottom:0;}
+.ai-inp button{background:var(--gold);border:none;color:#0B1320;padding:8px 13px;border-radius:0 8px 8px 0;cursor:pointer;font-weight:700;font-size:12px;}
+.ss{display:none;}.ss.act{display:block;}
+.hidden{display:none!important;}
+input[type=color]{-webkit-appearance:none;width:42px;height:42px;border-radius:8px;border:2px solid var(--border);cursor:pointer;padding:2px;background:var(--card);}
+@media(max-width:760px){.main{flex-direction:column;}.right{width:100%;position:static;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <div class="logo">MoJo <span>WRAP STUDIO</span></div>
+    <div class="sub">Powered by WPM Wolf Pack &middot; 20 Years of Custom Car Craft</div>
+  </div>
+</div>
+
+<!-- STEP TABS -->
+<div class="steps">
+  <div class="step active" id="stab1" onclick="goStep(1)"><span class="sn">1</span>Vehicle</div>
+  <div class="step" id="stab2" onclick="goStep(2)"><span class="sn">2</span>Service</div>
+  <div class="step" id="stab3" onclick="goStep(3)"><span class="sn">3</span>Color</div>
+  <div class="step" id="stab4" onclick="goStep(4)"><span class="sn">4</span>Quote</div>
+</div>
+
+<div class="main">
+<div class="left">
+
+<!-- ══ STEP 1: VEHICLE ══ -->
+<div class="ss act" id="step1">
+<div class="card">
+  <div class="ct" id="step1Title">🚗 Select Your Vehicle</div>
+
+  <!-- Vehicle category toggle -->
+  <div style="display:flex;gap:8px;margin-bottom:14px;">
+    <button class="cb sel" id="catAuto" onclick="setVehicleCategory('auto')" style="flex:1;padding:9px;">🚗 Car / Truck / Van</button>
+    <button class="cb" id="catMoto" onclick="setVehicleCategory('moto')" style="flex:1;padding:9px;">🏍️ Motorcycle</button>
+  </div>
+
+  <label>Model Year</label>
+  <select id="selYear" onchange="loadMakes()">
+    <option value="">— Choose Year —</option>
+  </select>
+  <label>Make</label>
+  <select id="selMake" onchange="loadModels()" disabled>
+    <option value="">— Choose Make —</option>
+  </select>
+  <label>Model</label>
+  <select id="selModel" onchange="detectType()" disabled>
+    <option value="">— Choose Model —</option>
+  </select>
+
+  <!-- Auto body styles -->
+  <div id="autoBodyRow">
+    <label>Body Style</label>
+    <select id="selBody" onchange="S.bodyStyle=this.value;calcEst()">
+      <option value="sedan">Sedan</option>
+      <option value="coupe">Coupe</option>
+      <option value="hatchback">Hatchback</option>
+      <option value="wagon">Wagon / Crossover</option>
+      <option value="suv">SUV / Pickup Truck</option>
+      <option value="fullsize">Full-Size SUV / Crew Cab</option>
+      <option value="van">Minivan / Full-Size Van</option>
+    </select>
+  </div>
+
+  <!-- Motorcycle body styles (hidden by default) -->
+  <div id="motoBodyRow" style="display:none;">
+    <label>Bike Style</label>
+    <select id="selMotoBody" onchange="S.bodyStyle=this.value;calcEst()">
+      <option value="moto_cruiser">Cruiser (Harley, Indian, Honda Shadow…)</option>
+      <option value="moto_sport">Sport / Supersport (CBR, R1, Ninja ZX…)</option>
+      <option value="moto_naked">Naked / Standard (MT-07, Duke, Z900…)</option>
+      <option value="moto_adventure">Adventure / ADV (GS, Africa Twin, KTM 1290…)</option>
+      <option value="moto_touring">Touring (Gold Wing, Road Glide, FJR…)</option>
+      <option value="moto_chopper">Chopper / Custom</option>
+      <option value="moto_dual">Dual-Sport / Supermoto</option>
+    </select>
+    <div style="font-size:11px;color:var(--muted);margin-top:4px;">
+      🎨 Wrap panels: tank · fairings · fenders · frame accents · swingarm
+    </div>
+  </div>
+  <div id="v1msg" class="pinfo hidden" style="margin-top:4px;"></div>
+  <div class="btn-row">
+    <button class="btn btn-p" onclick="goStep(2)">Continue to Service &rarr;</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ STEP 2: SERVICE + MATERIAL ══ -->
+<div class="ss" id="step2">
+<div class="card">
+  <div class="ct">🛠 Service Type</div>
+  <div class="sgrid" id="svcGrid"></div>
+  <div id="dipsRow" class="hidden" style="margin-top:12px;">
+    <label>Plasti-Dip Coats</label>
+    <select id="selDips" onchange="S.dipCoats=+this.value;calcEst()">
+      <option value="3">3 Coats (Standard)</option>
+      <option value="4">4 Coats (Recommended)</option>
+      <option value="5">5 Coats (Heavy Duty)</option>
+    </select>
+  </div>
+</div>
+<div class="card">
+  <div class="ct">🎞 Material Grade</div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">All materials fulfilled exclusively through WPM Wolf Pack Catalog — your dedicated supply chain partner.</p>
+  <div id="matGrid"></div>
+</div>
+<div class="btn-row" style="padding:0 0 8px;">
+  <button class="btn btn-s" onclick="goStep(1)">&larr; Back</button>
+  <button class="btn btn-p" onclick="goStep(3)">Choose Color &rarr;</button>
+</div>
+</div>
+
+<!-- ══ STEP 3: COLOR PICKER ══ -->
+<div class="ss" id="step3">
+<div class="card">
+  <div class="ct">🎨 Choose Your Color</div>
+  <div id="oemBanner" class="pinfo">
+    🏭 Showing factory colors for <strong id="oemMakeName" style="color:var(--gold);">your vehicle</strong> — pick the color that matches or inspires your wrap.
+  </div>
+
+  <div style="display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;">
+    <button class="cb sel" id="ctab_oem" onclick="showColorType('oem',this)">Factory OEM Colors</button>
+    <button class="cb" id="ctab_any" onclick="showColorType('any',this)">Custom / Color Change</button>
+  </div>
+
+  <!-- OEM SECTION -->
+  <div id="oemSection">
+    <input type="text" id="colorSearch" placeholder="Search colors (e.g. white, red, metallic)&hellip;" oninput="filterOEM()" style="margin-bottom:10px;">
+    <div class="oem-grid" id="oemGrid"></div>
+    <p id="oemNone" class="hidden" style="color:var(--muted);font-size:12px;text-align:center;padding:18px 0;">
+      No colors found for &ldquo;<span id="oemNoneQ"></span>&rdquo; &mdash; try a different search term.
+    </p>
+  </div>
+
+  <!-- CUSTOM / WRAP CHANGE SECTION -->
+  <div id="anySection" class="hidden">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:11px;">Choose any color for a full color-change wrap &mdash; not limited to factory options.</div>
+    <div class="wrap-grid" id="wrapGrid"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;margin-top:4px;">
+      <label style="margin-bottom:0;white-space:nowrap;">Custom Color:</label>
+      <input type="color" id="customColorPick" value="#1A3A6B" onchange="pickCustomColor(this.value)">
+      <span style="font-size:12px;color:var(--muted);">Pick any exact color</span>
+    </div>
+  </div>
+
+  <!-- SELECTED COLOR DISPLAY -->
+  <div id="selColorPanel" class="sel-color-panel hidden">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">
+      <div id="selColorSwatch" style="width:56px;height:56px;border-radius:10px;border:2px solid rgba(255,255,255,.2);flex-shrink:0;"></div>
+      <div>
+        <div id="selColorName" style="font-weight:700;font-size:15px;"></div>
+        <div id="selColorCode" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
+        <div id="selColorFinish" style="font-size:11px;color:var(--green);margin-top:1px;text-transform:capitalize;"></div>
+      </div>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:8px;">📦 Recommended Wrap Films &mdash; via WPM Wolf Pack Catalog</div>
+    <div id="filmRecList"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-s" onclick="goStep(2)">&larr; Back</button>
+    <button class="btn btn-p" onclick="goStep(4)">Get My Quote &rarr;</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ STEP 4: QUOTE ══ -->
+<div class="ss" id="step4">
+<div class="card">
+  <div class="ct">📋 Your Wrap Estimate</div>
+  <div id="quoteBody"></div>
+</div>
+<div class="card">
+  <div class="ct">🏪 Order Through WPM Wolf Pack Catalog</div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">All wrap materials are fulfilled exclusively through the WPM Wolf Pack Catalog. Your trusted supply chain for every MoJo Wrap Studio project.</p>
+  <div id="supplierList"></div>
+</div>
+<div class="btn-row" style="padding:0 0 8px;">
+  <button class="btn btn-s" onclick="goStep(3)">&larr; Adjust Color</button>
+  <button class="btn btn-p" onclick="openCatalog()">🛒 Order from WPM Catalog</button>
+</div>
+</div>
+
+</div><!-- /left -->
+
+<!-- SIDEBAR -->
+<div class="right">
+  <div style="font-weight:700;font-size:13px;color:var(--gold);margin-bottom:11px;text-transform:uppercase;letter-spacing:1px;">📊 Live Estimate</div>
+  <div class="est-big" id="sbTotal">$0</div>
+  <div id="sbRows" style="margin-bottom:12px;"></div>
+  <div id="sbVehicle" style="font-size:11px;color:var(--muted);margin-bottom:7px;min-height:16px;"></div>
+  <div id="sbColor" style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);margin-bottom:12px;min-height:20px;"></div>
+  <hr style="border-color:var(--border);margin-bottom:12px;">
+  <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700;text-transform:uppercase;">Timeline</div>
+  <div id="sbTime" style="font-size:12px;margin-bottom:14px;"></div>
+  <a href="https://eb5dv8-uq.myshopify.com" target="_blank"
+     style="display:block;text-align:center;padding:10px;background:rgba(212,175,55,.1);border:1px solid var(--gold);border-radius:8px;color:var(--gold);text-decoration:none;font-weight:700;font-size:12px;letter-spacing:.5px;">
+    🛒 WPM Wolf Pack Catalog
+  </a>
+</div>
+</div><!-- /main -->
+
+<!-- AI ASSISTANT — WOLF -->
+<div class="ai-wrap">
+  <div class="ai-box" id="aiBox">
+    <div class="ai-hdr">
+      <span>🐺</span><span>Wolf &mdash; MoJo AI Assistant</span>
+      <button onclick="closeAI()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#0B1320;font-size:16px;line-height:1;">&#x2715;</button>
+    </div>
+    <div class="ai-msgs" id="aiMsgs">
+      <div class="msg bot">Hey! I'm Wolf, your MoJo Wrap Studio assistant. Ask me about pricing, film options, colors, or timelines. 🐺</div>
+    </div>
+    <div class="ai-inp">
+      <input type="text" id="aiIn" placeholder="Ask Wolf anything&hellip;" onkeydown="if(event.key==='Enter')sendAI()">
+      <button onclick="sendAI()">&rarr;</button>
+    </div>
+  </div>
+  <button class="ai-btn" onclick="toggleAI()">🐺</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+var S = {
+  year:'', make:'', model:'', bodyStyle:'sedan',
+  vehicleCategory:'auto',  // 'auto' | 'moto'
+  service:'full_vinyl', material:'mid_oracal', dipCoats:3,
+  colorName:'', colorHex:'', colorFinish:'solid', colorCode:'',
+  colorType:'oem', _est:null
+};
+
+// ═══════════════════════════════════════════════════════════════
+// VEHICLE SURFACE AREAS (square feet by body style)
+// ═══════════════════════════════════════════════════════════════
+var VA = {
+  // ── Cars / Trucks / Vans ──
+  sedan:    {total:152},
+  coupe:    {total:139},
+  hatchback:{total:134},
+  wagon:    {total:166},
+  suv:      {total:198},
+  fullsize: {total:234},
+  van:      {total:228},
+  // ── Motorcycles (sq ft — tank + panels + fenders + fairings) ──
+  moto_cruiser:  {total:38},   // tank, front/rear fenders, saddlebag lids
+  moto_sport:    {total:32},   // tank + full fairing panels (tight curves)
+  moto_naked:    {total:26},   // tank + minimal side panels
+  moto_adventure:{total:44},   // tank, side panels, crash bar guards, fork guards
+  moto_touring:  {total:54},   // tank, full fairing, hard saddlebags, top box
+  moto_chopper:  {total:34},   // tank, stretched fenders, minimal panels
+  moto_dual:     {total:30}    // adventure-lite / dual-sport
+};
+
+// ═══════════════════════════════════════════════════════════════
+// MATERIALS
+// ═══════════════════════════════════════════════════════════════
+var MAT = {
+  econ_raxtify:  {name:'RAXTiFY Economy Cast',    brand:'RAXTiFY',   ppf:0.80, warranty:'3-yr',   finish:'Gloss/Matte',     badge:'Budget'},
+  mid_oracal:    {name:'ORACAL 970RA Premium',    brand:'ORACAL',    ppf:2.20, warranty:'5-7yr',  finish:'80+ Finishes',    badge:'Popular'},
+  mid_avery:     {name:'Avery Dennison SW900',     brand:'Avery',     ppf:2.50, warranty:'7-yr',   finish:'Supreme Cast',    badge:'Pro'},
+  prem_3m:       {name:'3M 2080 Series',           brand:'3M',        ppf:4.50, warranty:'8-10yr', finish:'Factory-Matched', badge:'Premium'},
+  spec_chrome:   {name:'Chrome / Mirror Vinyl',    brand:'Multi',     ppf:6.00, warranty:'2-3yr',  finish:'Mirror Finish',   badge:'Specialty'},
+  spec_plastidip:{name:'Performix Plasti-Dip',     brand:'Plasti-Dip',ppf:38,   warranty:'Removable',finish:'Dip Coating',  badge:'Unique'}
+};
+
+// ═══════════════════════════════════════════════════════════════
+// SERVICES
+// ═══════════════════════════════════════════════════════════════
+var SVC = {
+  full_vinyl:{name:'Full Wrap',        icon:'🚘', desc:'Complete exterior vinyl wrap', labor:800,  days:'3-5'},
+  partial:   {name:'Partial Wrap',     icon:'✂️', desc:'Hood, roof, mirrors & accents',labor:450,  days:'1-2'},
+  color_chg: {name:'Color Change',     icon:'🎨', desc:'Full body color transformation',labor:950, days:'4-6'},
+  graphics:  {name:'Graphics & Decals',icon:'⭐', desc:'Logos, stripes, custom art',   labor:300,  days:'1-2'},
+  plastidip: {name:'Plasti-Dip',       icon:'💧', desc:'Removable rubber coating',     labor:600,  days:'2-3'},
+  ppf:       {name:'Paint Protection', icon:'🛡', desc:'Clear film for rock chips',     labor:1200, days:'3-5'}
+};
+
+// ═══════════════════════════════════════════════════════════════
+// OEM COLOR DATABASE — by manufacturer (UPPERCASE keys)
+// ═══════════════════════════════════════════════════════════════
+var OEM = {
+'FORD':[
+  {n:'Oxford White',              h:'#F4F2EC',c:'YZ',  f:'solid'},
+  {n:'Race Red',                  h:'#C01820',c:'PQ',  f:'solid'},
+  {n:'Shadow Black',              h:'#1A1A1A',c:'G1',  f:'solid'},
+  {n:'Rapid Red Metallic',        h:'#8B2635',c:'D4',  f:'metallic'},
+  {n:'Agate Black Metallic',      h:'#1B1C1E',c:'JS',  f:'metallic'},
+  {n:'Iconic Silver Metallic',    h:'#8D9196',c:'M7',  f:'metallic'},
+  {n:'Atlas Blue Metallic',       h:'#2D4D6B',c:'N6',  f:'metallic'},
+  {n:'Antimatter Blue Metallic',  h:'#1B3261',c:'N3',  f:'metallic'},
+  {n:'Carbonized Gray Metallic',  h:'#59636A',c:'M7',  f:'metallic'},
+  {n:'Velocity Blue Metallic',    h:'#1B3E8C',c:'V6',  f:'metallic'},
+  {n:'Eruption Green Metallic',   h:'#2D5040',c:'UG',  f:'metallic'},
+  {n:'Forged Green Metallic',     h:'#3A4A42',c:'',    f:'metallic'},
+  {n:'Blazer Blue Metallic',      h:'#1E3A7A',c:'',    f:'metallic'},
+  {n:'Cactus Gray',               h:'#8A8E82',c:'',    f:'metallic'},
+  {n:'Star White Metallic Tri-Coat',h:'#EEECE5',c:'AZ',f:'tricoat'},
+  {n:'Cyber Orange Metallic Tri-Coat',h:'#CC6A00',c:'',f:'tricoat'}
+],
+'CHEVROLET':[
+  {n:'Summit White',              h:'#F0EEE8',c:'GAZ', f:'solid'},
+  {n:'Black',                     h:'#1A1A1A',c:'GBA', f:'solid'},
+  {n:'Red Hot',                   h:'#B51C1C',c:'GKZ', f:'solid'},
+  {n:'Rapid Blue',                h:'#1A4898',c:'G7Q', f:'solid'},
+  {n:'Volcanic Orange',           h:'#CC4500',c:'',    f:'solid'},
+  {n:'Shock Yellow Metallic',     h:'#C8A800',c:'',    f:'metallic'},
+  {n:'Silver Ice Metallic',       h:'#A4AAB0',c:'GAN', f:'metallic'},
+  {n:'Sterling Gray Metallic',    h:'#828A92',c:'G9K', f:'metallic'},
+  {n:'Midnight Blue Metallic',    h:'#0D2040',c:'',    f:'metallic'},
+  {n:'Northsky Blue Metallic',    h:'#1A3C6E',c:'',    f:'metallic'},
+  {n:'Harvest Bronze Metallic',   h:'#896844',c:'',    f:'metallic'},
+  {n:'Mosaic Black Metallic',     h:'#252628',c:'GXD', f:'metallic'},
+  {n:'Evergreen Gray Metallic',   h:'#48594E',c:'',    f:'metallic'},
+  {n:'Radiant Red Tintcoat',      h:'#960A14',c:'GAH', f:'tintcoat'},
+  {n:'Iridescent Pearl Tricoat',  h:'#EAE6DB',c:'',    f:'tricoat'}
+],
+'GMC':[
+  {n:'Summit White',              h:'#F0EEE8',c:'GAZ', f:'solid'},
+  {n:'Onyx Black',                h:'#1C1C1C',c:'GBA', f:'solid'},
+  {n:'Quicksilver Metallic',      h:'#A0A4A8',c:'GAN', f:'metallic'},
+  {n:'Satin Steel Metallic',      h:'#808490',c:'G9K', f:'metallic'},
+  {n:'Pacific Blue Metallic',     h:'#1A3A68',c:'',    f:'metallic'},
+  {n:'Downpour Metallic',         h:'#1C3A6A',c:'',    f:'metallic'},
+  {n:'Cardinal Red',              h:'#9B1418',c:'',    f:'metallic'},
+  {n:'Dark Sky Metallic',         h:'#3A4A52',c:'',    f:'metallic'},
+  {n:'Smokey Quartz Metallic',    h:'#4A4642',c:'',    f:'metallic'},
+  {n:'Cayenne Red Tintcoat',      h:'#8A1010',c:'',    f:'tintcoat'}
+],
+'DODGE':[
+  {n:'White Knuckle',             h:'#F2F0EA',c:'PWC', f:'solid'},
+  {n:'Pitch Black',               h:'#1A1A1A',c:'PX8', f:'solid'},
+  {n:'TorRed',                    h:'#C41A18',c:'PR8', f:'solid'},
+  {n:'Hellraisin',                h:'#5A2878',c:'PHJ', f:'solid'},
+  {n:'F8 Green',                  h:'#2A5A2A',c:'PGJ', f:'solid'},
+  {n:'Go Mango',                  h:'#E84800',c:'PVP', f:'solid'},
+  {n:'Sinamon Stick',             h:'#C4580A',c:'',    f:'solid'},
+  {n:'Destroyer Gray',            h:'#6A7278',c:'PAR', f:'metallic'},
+  {n:'Indigo Blue',               h:'#1A2A5A',c:'',    f:'metallic'},
+  {n:'B5 Blue Pearl',             h:'#1A3A8A',c:'PB5', f:'pearl'},
+  {n:'Octane Red Pearl',          h:'#8B1418',c:'PRM', f:'pearl'}
+],
+'RAM':[
+  {n:'Bright White',              h:'#F4F0E8',c:'PWC', f:'solid'},
+  {n:'Flame Red',                 h:'#C01414',c:'PR4', f:'solid'},
+  {n:'Spitfire Orange',           h:'#CC5A00',c:'',    f:'solid'},
+  {n:'Anvil',                     h:'#4A4E54',c:'',    f:'metallic'},
+  {n:'Billet Silver Metallic',    h:'#9A9EA6',c:'PSC', f:'metallic'},
+  {n:'Granite Crystal Metallic',  h:'#5A5E64',c:'PAU', f:'metallic'},
+  {n:'Patriot Blue Pearl',        h:'#1C3A6A',c:'PBJ', f:'pearl'},
+  {n:'Diamond Black Crystal Pearl',h:'#1A1A1A',c:'PXJ',f:'pearl'},
+  {n:'Hydro Blue Pearl',          h:'#1060C0',c:'PBB', f:'pearl'},
+  {n:'Delmonico Red Pearl',       h:'#8B1018',c:'PRM', f:'pearl'}
+],
+'JEEP':[
+  {n:'Bright White',              h:'#F2EEE6',c:'PW7', f:'solid'},
+  {n:'Black',                     h:'#1A1A1A',c:'PX8', f:'solid'},
+  {n:'Firecracker Red',           h:'#C01414',c:'PR4', f:'solid'},
+  {n:'Nacho',                     h:'#CC7C00',c:'',    f:'solid'},
+  {n:'Earl',                      h:'#8A8A7A',c:'',    f:'metallic'},
+  {n:'Granite Crystal Metallic',  h:'#5A5E64',c:'PAU', f:'metallic'},
+  {n:'Sting-Gray',                h:'#6A6E74',c:'',    f:'metallic'},
+  {n:'Sarge Green',               h:'#4A5A38',c:'PGC', f:'metallic'},
+  {n:'Gator',                     h:'#48543E',c:'',    f:'metallic'},
+  {n:'Punkn Metallic',            h:'#CC6030',c:'POR', f:'metallic'},
+  {n:'High Velocity',             h:'#A89850',c:'',    f:'metallic'},
+  {n:'Snazzberry Pearl',          h:'#8B3040',c:'',    f:'pearl'},
+  {n:'Hydro Blue Pearl',          h:'#1060B8',c:'PBB', f:'pearl'}
+],
+'TOYOTA':[
+  {n:'Super White',               h:'#F4F4F0',c:'040', f:'solid'},
+  {n:'Cement',                    h:'#8A8E92',c:'1L1', f:'solid'},
+  {n:'Lunar Rock',                h:'#8A8A78',c:'',    f:'solid'},
+  {n:'Army Green',                h:'#4A5A35',c:'',    f:'metallic'},
+  {n:'Cavalry Blue',              h:'#2A4A7A',c:'',    f:'metallic'},
+  {n:'Silver Metallic',           h:'#9EA6AC',c:'1F7', f:'metallic'},
+  {n:'Magnetic Gray Metallic',    h:'#6B7278',c:'1G3', f:'metallic'},
+  {n:'Blueprint',                 h:'#1C3A66',c:'8X8', f:'metallic'},
+  {n:'Midnight Black Metallic',   h:'#1A1A1A',c:'209', f:'metallic'},
+  {n:'Attitude Black Metallic',   h:'#1E1E1E',c:'218', f:'metallic'},
+  {n:'Underground',               h:'#3A3A3A',c:'',    f:'metallic'},
+  {n:'Stratosphere',              h:'#2E4C5A',c:'',    f:'metallic'},
+  {n:'Blizzard Pearl',            h:'#EAE7E0',c:'070', f:'pearl'},
+  {n:'Wind Chill Pearl',          h:'#E8E4D8',c:'',    f:'pearl'},
+  {n:'Ruby Flare Pearl',          h:'#8B1A1A',c:'3U5', f:'pearl'},
+  {n:'Inferno',                   h:'#8B1000',c:'',    f:'tricoat'}
+],
+'HONDA':[
+  {n:'Rallye Red',                h:'#C01A14',c:'R-513',   f:'solid'},
+  {n:'Platinum White Pearl',      h:'#EDE9DF',c:'NH-883P', f:'pearl'},
+  {n:'Sonic Gray Pearl',          h:'#6E7478',c:'NH-797M', f:'pearl'},
+  {n:'Crystal Black Pearl',       h:'#1A1C1E',c:'NH-731P', f:'pearl'},
+  {n:'Boost Blue Pearl',          h:'#0A3C8A',c:'B-628P',  f:'pearl'},
+  {n:'Mise en Scene Green Pearl', h:'#384A38',c:'',        f:'pearl'},
+  {n:'Lunar Silver Metallic',     h:'#9BA0A6',c:'NH-788P', f:'metallic'},
+  {n:'Modern Steel Metallic',     h:'#5A5E64',c:'NH-797M', f:'metallic'},
+  {n:'Aegean Blue Metallic',      h:'#28466E',c:'B-630M',  f:'metallic'},
+  {n:'Radiant Red Metallic',      h:'#9B1824',c:'R-566M',  f:'metallic'}
+],
+'NISSAN':[
+  {n:'Glacier White',             h:'#F2EEE6',c:'QAB', f:'solid'},
+  {n:'Super Black',               h:'#1A1A1A',c:'KH3', f:'solid'},
+  {n:'Gun Metallic',              h:'#686E74',c:'KAD', f:'metallic'},
+  {n:'Brilliant Silver Metallic', h:'#A0A4AA',c:'K23', f:'metallic'},
+  {n:'Caspian Blue Metallic',     h:'#1A3462',c:'',    f:'metallic'},
+  {n:'Deep Blue Pearl',           h:'#1A3880',c:'',    f:'pearl'},
+  {n:'Magnetic Black Pearl',      h:'#222226',c:'G41', f:'pearl'},
+  {n:'Scarlet Ember Tintcoat',    h:'#8A1818',c:'',    f:'tintcoat'},
+  {n:'Pearl White TriCoat',       h:'#EAE6DC',c:'QAK', f:'tricoat'},
+  {n:'Sunset Drift ChromaFlair',  h:'#8A4838',c:'',    f:'specialty'}
+],
+'HYUNDAI':[
+  {n:'Atlas White',               h:'#F0EEE8',c:'WAW', f:'solid'},
+  {n:'Fiery Red',                 h:'#C01010',c:'S2R', f:'solid'},
+  {n:'Intense Blue',              h:'#1C3A7A',c:'B5U', f:'metallic'},
+  {n:'Hampton Gray',              h:'#8A8E96',c:'MGT', f:'metallic'},
+  {n:'Fluid Metal',               h:'#6E7278',c:'R2U', f:'metallic'},
+  {n:'Amazon Gray Metallic',      h:'#5A5E64',c:'MZH', f:'metallic'},
+  {n:'Shimmering Silver Metallic',h:'#A0A4AA',c:'V6S', f:'metallic'},
+  {n:'Digital Teal Pearl',        h:'#1A5858',c:'',    f:'pearl'},
+  {n:'Serenity White Pearl',      h:'#EAE4D8',c:'WA4', f:'pearl'},
+  {n:'Phantom Black Pearl',       h:'#1C1C1E',c:'PH',  f:'pearl'}
+],
+'KIA':[
+  {n:'Ebony Black',               h:'#1C1C1E',c:'ABP', f:'solid'},
+  {n:'Runway Red',                h:'#B01010',c:'CR5', f:'metallic'},
+  {n:'Gravity Blue',              h:'#1A3A62',c:'GB',  f:'metallic'},
+  {n:'Wolf Gray',                 h:'#8A8E96',c:'WGM', f:'metallic'},
+  {n:'Interstellar Gray',         h:'#62666E',c:'ISG', f:'metallic'},
+  {n:'Steel Gray',                h:'#747880',c:'SGT', f:'metallic'},
+  {n:'Sporty Blue',               h:'#1A48A8',c:'SB',  f:'metallic'},
+  {n:'Snow White Pearl',          h:'#EEE8DC',c:'SWP', f:'pearl'},
+  {n:'Glacial White Pearl',       h:'#EAE6DC',c:'GWP', f:'pearl'},
+  {n:'Aurora Black Pearl',        h:'#1A1A1C',c:'ABP', f:'pearl'}
+],
+'BMW':[
+  {n:'Alpine White',              h:'#F4F2EC',c:'300', f:'solid'},
+  {n:'Sao Paulo Yellow',          h:'#C8A800',c:'',    f:'solid'},
+  {n:'Black Sapphire Metallic',   h:'#1A1E24',c:'475', f:'metallic'},
+  {n:'Mineral White Metallic',    h:'#E8E4DA',c:'B59', f:'metallic'},
+  {n:'Mineral Grey Metallic',     h:'#6E7478',c:'B39', f:'metallic'},
+  {n:'Space Grey Metallic',       h:'#5A5E64',c:'A52', f:'metallic'},
+  {n:'Brooklyn Grey Metallic',    h:'#88888C',c:'',    f:'metallic'},
+  {n:'Bluestone Metallic',        h:'#2E3E54',c:'C1M', f:'metallic'},
+  {n:'Phytonic Blue Metallic',    h:'#2A4A6A',c:'C1B', f:'metallic'},
+  {n:'Portimao Blue Metallic',    h:'#1A3A5A',c:'',    f:'metallic'},
+  {n:'Isle of Man Green Metallic',h:'#2E4A38',c:'',    f:'metallic'},
+  {n:'Toronto Red Metallic',      h:'#8A2030',c:'',    f:'metallic'},
+  {n:'Tanzanite Blue Metallic',   h:'#1A2A50',c:'',    f:'metallic'}
+],
+'MERCEDES-BENZ':[
+  {n:'Polar White',               h:'#F2F0EA',c:'149', f:'solid'},
+  {n:'Obsidian Black Metallic',   h:'#1A1A1A',c:'197', f:'metallic'},
+  {n:'Iridium Silver Metallic',   h:'#8C9098',c:'775', f:'metallic'},
+  {n:'Selenite Grey Metallic',    h:'#70747A',c:'297', f:'metallic'},
+  {n:'High-Tech Silver Metallic', h:'#9A9EA6',c:'',    f:'metallic'},
+  {n:'Graphite Grey Metallic',    h:'#5A5E64',c:'787', f:'metallic'},
+  {n:'Sodalite Blue Metallic',    h:'#1E3864',c:'896', f:'metallic'},
+  {n:'Cavansite Blue Metallic',   h:'#1C3C5A',c:'',    f:'metallic'},
+  {n:'Emerald Green Metallic',    h:'#2A4C38',c:'',    f:'metallic'},
+  {n:'Patagonia Red Metallic',    h:'#8A1820',c:'',    f:'metallic'},
+  {n:'Manufaktur Diamond White',  h:'#F0EEE8',c:'',    f:'tricoat'}
+],
+'AUDI':[
+  {n:'Mythos Black Metallic',     h:'#1C1C1E',c:'Z9',  f:'metallic'},
+  {n:'Glacier White Metallic',    h:'#ECEAE2',c:'T9',  f:'metallic'},
+  {n:'Florett Silver Metallic',   h:'#A4A8AE',c:'L5',  f:'metallic'},
+  {n:'Chronos Gray Metallic',     h:'#78808A',c:'',    f:'metallic'},
+  {n:'Daytona Gray Pearl',        h:'#5E6268',c:'6Y',  f:'pearl'},
+  {n:'Navarra Blue Metallic',     h:'#1E3A5A',c:'2D',  f:'metallic'},
+  {n:'Tango Red Metallic',        h:'#8A1820',c:'Y1',  f:'metallic'},
+  {n:'Catalunya Red Metallic',    h:'#7A1010',c:'',    f:'metallic'},
+  {n:'District Green Metallic',   h:'#2E4A3A',c:'',    f:'metallic'},
+  {n:'Python Yellow',             h:'#C8A800',c:'',    f:'solid'},
+  {n:'Turbo Blue',                h:'#1060C8',c:'',    f:'solid'}
+],
+'SUBARU':[
+  {n:'Crystal White Pearl',       h:'#EEE8DE',c:'K1X', f:'pearl'},
+  {n:'Lapis Blue Pearl',          h:'#1C3A6A',c:'M3Y', f:'pearl'},
+  {n:'Geyser Blue Pearl',         h:'#3C6A8A',c:'',    f:'pearl'},
+  {n:'Solar Orange Pearl',        h:'#CC5A00',c:'',    f:'pearl'},
+  {n:'WR Blue Pearl',             h:'#1040A0',c:'61K', f:'pearl'},
+  {n:'Plasma Yellow Pearl',       h:'#C8B400',c:'',    f:'pearl'},
+  {n:'Ice Silver Metallic',       h:'#A4A8AE',c:'G1U', f:'metallic'},
+  {n:'Magnetite Gray Metallic',   h:'#62686E',c:'G2Y', f:'metallic'},
+  {n:'Autumn Green Metallic',     h:'#4A5A3C',c:'',    f:'metallic'},
+  {n:'Crystal Black Silica',      h:'#1C1C1E',c:'D4S', f:'metallic'},
+  {n:'Desert Khaki',              h:'#8A7A5A',c:'',    f:'solid'}
+],
+'TESLA':[
+  {n:'Pearl White Multi-Coat',    h:'#EEEADE',c:'PPSW',f:'pearl'},
+  {n:'Red Multi-Coat',            h:'#9B1418',c:'PPMR',f:'multicoat'},
+  {n:'Ultra Red',                 h:'#B01020',c:'',    f:'multicoat'},
+  {n:'Solid Black',               h:'#1A1A1A',c:'PBSB',f:'solid'},
+  {n:'Midnight Silver Metallic',  h:'#6E7278',c:'PMNG',f:'metallic'},
+  {n:'Deep Blue Metallic',        h:'#1A3462',c:'PPSB',f:'metallic'},
+  {n:'Stealth Grey',              h:'#585E64',c:'',    f:'metallic'},
+  {n:'Quicksilver',               h:'#B0B4BA',c:'',    f:'metallic'}
+],
+'VOLKSWAGEN':[
+  {n:'Pure White',                h:'#F2F0EA',c:'2Y',  f:'solid'},
+  {n:'Tornado Red',               h:'#C01A14',c:'LP3', f:'solid'},
+  {n:'Lime Yellow Metallic',      h:'#8A9000',c:'',    f:'metallic'},
+  {n:'Deep Black Pearl',          h:'#1A1A1C',c:'9B',  f:'pearl'},
+  {n:'Pyrite Silver Metallic',    h:'#9A9EA6',c:'2L',  f:'metallic'},
+  {n:'Indium Gray Metallic',      h:'#6A6E78',c:'0B',  f:'metallic'},
+  {n:'Reef Blue Metallic',        h:'#1C4468',c:'5H',  f:'metallic'},
+  {n:'Denim Blue Metallic',       h:'#2A4A7A',c:'',    f:'metallic'},
+  {n:'Stonewashed Blue',          h:'#4A6A88',c:'',    f:'metallic'},
+  {n:'Avocado Green Metallic',    h:'#486038',c:'',    f:'metallic'}
+],
+'CADILLAC':[
+  {n:'Summit White',              h:'#F0EEE8',c:'GAZ', f:'solid'},
+  {n:'Black Raven',               h:'#1A1A1A',c:'GBA', f:'solid'},
+  {n:'Electric Blue',             h:'#1A3498',c:'',    f:'metallic'},
+  {n:'Silver Metallic',           h:'#A0A4A8',c:'',    f:'metallic'},
+  {n:'Garnet Metallic',           h:'#6A1828',c:'',    f:'metallic'},
+  {n:'Gray Smoke Metallic',       h:'#78808A',c:'',    f:'metallic'},
+  {n:'Bronze Dune Metallic',      h:'#6A5030',c:'',    f:'metallic'},
+  {n:'Emerald Lake Metallic',     h:'#1A4830',c:'',    f:'metallic'},
+  {n:'Infrared Tintcoat',         h:'#8A0A14',c:'',    f:'tintcoat'}
+],
+'LINCOLN':[
+  {n:'Pristine White',            h:'#F0EEE6',c:'',    f:'solid'},
+  {n:'Infinite Black',            h:'#1A1A1A',c:'',    f:'solid'},
+  {n:'Rhapsody Blue',             h:'#1E3262',c:'',    f:'metallic'},
+  {n:'Crystal Copper',            h:'#885A3A',c:'',    f:'metallic'},
+  {n:'Iced Mocha Metallic',       h:'#6A5A3A',c:'',    f:'metallic'},
+  {n:'Chroma Caviar',             h:'#1C1E22',c:'',    f:'metallic'},
+  {n:'Ceramic Pearl',             h:'#DCD8CE',c:'',    f:'pearl'}
+],
+'MAZDA':[
+  {n:'Snowflake White Pearl',     h:'#F0ECE4',c:'25D', f:'pearl'},
+  {n:'Rhodium White Premium',     h:'#E8E4DA',c:'',    f:'pearl'},
+  {n:'Soul Red Crystal Metallic', h:'#8A1018',c:'46V', f:'metallic'},
+  {n:'Machine Gray Metallic',     h:'#606468',c:'45P', f:'metallic'},
+  {n:'Polymetal Gray Metallic',   h:'#5A6068',c:'',    f:'metallic'},
+  {n:'Jet Black Mica',            h:'#1A1A1C',c:'A3F', f:'metallic'},
+  {n:'Eternal Blue Mica',         h:'#1A2E5A',c:'',    f:'metallic'},
+  {n:'Platinum Quartz Metallic',  h:'#AAAAAA',c:'',    f:'metallic'},
+  {n:'Zeal Red Premium',          h:'#780A14',c:'',    f:'metallic'}
+],
+'VOLVO':[
+  {n:'Crystal White Pearl',       h:'#EEEADE',c:'614', f:'pearl'},
+  {n:'Onyx Black Metallic',       h:'#1A1A1A',c:'019', f:'metallic'},
+  {n:'Silver Dawn Metallic',      h:'#B0B4BA',c:'',    f:'metallic'},
+  {n:'Osmium Grey Metallic',      h:'#70747A',c:'',    f:'metallic'},
+  {n:'Thunder Grey Metallic',     h:'#60646A',c:'',    f:'metallic'},
+  {n:'Denim Blue Metallic',       h:'#2A4A7A',c:'',    f:'metallic'},
+  {n:'Fusion Red Metallic',       h:'#8A1420',c:'',    f:'metallic'},
+  {n:'Vapour Grey',               h:'#90949A',c:'',    f:'metallic'}
+],
+'ACURA':[
+  {n:'Platinum White Pearl',      h:'#EAE4D8',c:'NH-883P',f:'pearl'},
+  {n:'Apex Blue Pearl',           h:'#1A304C',c:'',       f:'pearl'},
+  {n:'Performance Red Pearl',     h:'#8A1010',c:'',       f:'pearl'},
+  {n:'Majestic Black Pearl',      h:'#1C1C1E',c:'',       f:'pearl'},
+  {n:'Lunar Silver Metallic',     h:'#9BA0A6',c:'',       f:'metallic'},
+  {n:'Modern Steel Metallic',     h:'#5A5E64',c:'',       f:'metallic'},
+  {n:'Canyon Bronze Metallic',    h:'#6A4A28',c:'',       f:'metallic'}
+],
+'LEXUS':[
+  {n:'Obsidian',                  h:'#1A1A1A',c:'212',f:'solid'},
+  {n:'Eminent White Pearl',       h:'#EAE4D8',c:'085',f:'pearl'},
+  {n:'Nebula Gray Pearl',         h:'#6E7278',c:'1H9',f:'pearl'},
+  {n:'Nori Green Pearl',          h:'#2E4A3A',c:'',   f:'pearl'},
+  {n:'Heat Red',                  h:'#8A1818',c:'',   f:'metallic'},
+  {n:'Atomic Silver',             h:'#A4A8AE',c:'',   f:'metallic'},
+  {n:'Caviar',                    h:'#1C1E22',c:'',   f:'solid'},
+  {n:'Ultrasonic Blue Mica',      h:'#1A3462',c:'',   f:'metallic'},
+  {n:'Nightfall Mica',            h:'#1C2A42',c:'',   f:'metallic'}
+],
+'INFINITI':[
+  {n:'Moonbow White Pearl',       h:'#EAE4D8',c:'QM1',f:'pearl'},
+  {n:'Mineral Black',             h:'#1C1E22',c:'KH3',f:'solid'},
+  {n:'Dynamic Sunstone Red',      h:'#8A1820',c:'',   f:'metallic'},
+  {n:'Hagane Blue',               h:'#1A2A4A',c:'',   f:'metallic'},
+  {n:'Graphite Shadow',           h:'#606468',c:'',   f:'metallic'},
+  {n:'Liquid Platinum',           h:'#A8ACBA',c:'',   f:'metallic'}
+],
+'GENESIS':[
+  {n:'Uyuni White',               h:'#F0EEE6',c:'',   f:'solid'},
+  {n:'Vik Black',                 h:'#1C1E22',c:'',   f:'metallic'},
+  {n:'Savile Silver',             h:'#A4A8B0',c:'',   f:'metallic'},
+  {n:'Himalayan Gray',            h:'#8A8E96',c:'',   f:'metallic'},
+  {n:'Adriatic Blue',             h:'#1C3A5A',c:'',   f:'metallic'},
+  {n:'Atacama Sand',              h:'#C0A87A',c:'',   f:'metallic'},
+  {n:'Badlands Brown',            h:'#5A4A38',c:'',   f:'metallic'}
+],
+'BUICK':[
+  {n:'White Frost Tricoat',       h:'#EEE8DC',c:'',   f:'tricoat'},
+  {n:'Quicksilver Metallic',      h:'#A0A4A8',c:'',   f:'metallic'},
+  {n:'Ebony Twilight Metallic',   h:'#1C1E22',c:'',   f:'metallic'},
+  {n:'Dark Moon Blue Metallic',   h:'#1C2A4A',c:'',   f:'metallic'},
+  {n:'Deep Azure Metallic',       h:'#1A3264',c:'',   f:'metallic'},
+  {n:'Cinnabar Metallic',         h:'#8A1820',c:'',   f:'metallic'},
+  {n:'Pepperdust Metallic',       h:'#8A7060',c:'',   f:'metallic'}
+],
+// ─────────────────────────────────────────────────────────────────
+// MOTORCYCLE OEM COLORS
+// ─────────────────────────────────────────────────────────────────
+'HARLEY-DAVIDSON':[
+  {n:'Vivid Black',                   h:'#0A0A0A',c:'FLSTF',  f:'solid'},
+  {n:'Billiard Red',                  h:'#9A0A0A',c:'',        f:'metallic'},
+  {n:'Midnight Crimson',              h:'#6B0014',c:'',        f:'metallic'},
+  {n:'Deadwood Green',                h:'#3B4A30',c:'',        f:'metallic'},
+  {n:'Silver Fortune',                h:'#A0A4A8',c:'',        f:'metallic'},
+  {n:'River Rock Gray',               h:'#7A7C7A',c:'',        f:'metallic'},
+  {n:'Stone Washed White Pearl',      h:'#EAE8E0',c:'',        f:'pearl'},
+  {n:'Prospect Gold',                 h:'#C89840',c:'',        f:'metallic'},
+  {n:'Heirloom Red',                  h:'#8A1820',c:'',        f:'metallic'},
+  {n:'Barracuda Silver',              h:'#8C8E90',c:'',        f:'metallic'},
+  {n:'Industrial Blue',               h:'#1C3050',c:'',        f:'metallic'},
+  {n:'Two-Tone Birch White / Vivid Black', h:'#E8E4DC',c:'',   f:'solid'}
+],
+'HONDA':[
+  {n:'Pearl Glare White',             h:'#F0EDE4',c:'',        f:'pearl'},
+  {n:'Candy Chromosphere Red',        h:'#C01020',c:'',        f:'solid'},
+  {n:'Mat Ballistic Black Metallic',  h:'#1E1E1E',c:'',        f:'matte'},
+  {n:'Darkness Black Metallic',       h:'#141414',c:'',        f:'metallic'},
+  {n:'Matte Iridium Gray Metallic',   h:'#606264',c:'',        f:'matte'},
+  {n:'Tricolor (Red/White/Blue)',      h:'#CC0000',c:'',        f:'solid'},
+  {n:'Pearl Shining Yellow',          h:'#F0C800',c:'',        f:'pearl'},
+  {n:'Mars Orange',                   h:'#E04010',c:'',        f:'solid'},
+  {n:'Matte Pearl Morion Black',      h:'#1A1A1C',c:'',        f:'matte'},
+  {n:'Candy Blue',                    h:'#0050A0',c:'',        f:'specialty'}
+],
+'KAWASAKI':[
+  {n:'Lime Green',                    h:'#5EBB00',c:'',        f:'solid'},
+  {n:'Ebony',                         h:'#141414',c:'',        f:'solid'},
+  {n:'Metallic Matte Carbon Gray',    h:'#4A4C4E',c:'',        f:'matte'},
+  {n:'Pearl Robotic White',           h:'#ECEAE0',c:'',        f:'pearl'},
+  {n:'Candy Lime Green',              h:'#4A9A00',c:'',        f:'specialty'},
+  {n:'Metallic Spark Black',          h:'#1A1C1A',c:'',        f:'metallic'},
+  {n:'Candy Burnt Orange',            h:'#C85010',c:'',        f:'specialty'},
+  {n:'Blue',                          h:'#0048A0',c:'',        f:'solid'},
+  {n:'Metallic Flat Raw Titanium',    h:'#5C5E60',c:'',        f:'matte'},
+  {n:'Passion Red',                   h:'#AA1010',c:'',        f:'solid'}
+],
+'YAMAHA':[
+  {n:'Racing Blue',                   h:'#0030A0',c:'',        f:'solid'},
+  {n:'GYTR Blue',                     h:'#0040C0',c:'',        f:'metallic'},
+  {n:'Tech Black',                    h:'#141414',c:'',        f:'solid'},
+  {n:'Icon Blue',                     h:'#0050C0',c:'',        f:'solid'},
+  {n:'Raven (Matte Black)',            h:'#1E1E1E',c:'',        f:'matte'},
+  {n:'Team Yamaha Blue',              h:'#0040B0',c:'',        f:'solid'},
+  {n:'Velocity White',                h:'#F0EEE8',c:'',        f:'solid'},
+  {n:'Deep Purplish Blue',            h:'#1A2060',c:'',        f:'metallic'},
+  {n:'Cadmium Yellow',                h:'#F0C000',c:'',        f:'solid'},
+  {n:'Flame Red',                     h:'#C01020',c:'',        f:'solid'}
+],
+'SUZUKI':[
+  {n:'Metallic Triton Blue',          h:'#0050A0',c:'',        f:'metallic'},
+  {n:'Glass Mat Mechanical Gray',     h:'#5A5C5E',c:'',        f:'matte'},
+  {n:'Solid Black',                   h:'#121212',c:'',        f:'solid'},
+  {n:'Pearl Vigor Blue',              h:'#0048B0',c:'',        f:'pearl'},
+  {n:'Candy Daring Red',              h:'#C00010',c:'',        f:'specialty'},
+  {n:'Metallic Sword Silver',         h:'#A0A4A6',c:'',        f:'metallic'},
+  {n:'Metallic Mat Black',            h:'#1C1C1C',c:'',        f:'matte'},
+  {n:'Brilliant White',               h:'#F2F0E8',c:'',        f:'solid'},
+  {n:'Titan Gold',                    h:'#C09040',c:'',        f:'metallic'},
+  {n:'Fire Cracker Red',              h:'#C81010',c:'',        f:'solid'}
+],
+'DUCATI':[
+  {n:'Ducati Red',                    h:'#C80010',c:'',        f:'solid'},
+  {n:'Winter Test Livery',            h:'#F0EEE8',c:'',        f:'solid'},
+  {n:'Star White Silk',               h:'#E8E6DC',c:'',        f:'solid'},
+  {n:'Dark Stealth',                  h:'#1A1A1A',c:'',        f:'matte'},
+  {n:'Thrilling Black',               h:'#141414',c:'',        f:'solid'},
+  {n:'GP Red',                        h:'#CC0000',c:'',        f:'solid'},
+  {n:'Aviator Grey',                  h:'#606468',c:'',        f:'metallic'},
+  {n:'Sand Yellow',                   h:'#D4A030',c:'',        f:'solid'},
+  {n:'Street Fighter Green',          h:'#2A5A20',c:'',        f:'metallic'},
+  {n:'Iron Grey',                     h:'#4A4E52',c:'',        f:'metallic'}
+],
+'BMW':[
+  {n:'Racing Red',                    h:'#AA0010',c:'',        f:'solid'},
+  {n:'Option 719 San Francisco Green',h:'#2A5A38',c:'',        f:'metallic'},
+  {n:'Style Exclusive Ice Grey',      h:'#C0C4C8',c:'',        f:'metallic'},
+  {n:'Lightwhite uni',                h:'#EEECEA',c:'',        f:'solid'},
+  {n:'Black Storm Metallic',          h:'#1C1E20',c:'',        f:'metallic'},
+  {n:'Mineral White Metallic',        h:'#D4D0C8',c:'',        f:'metallic'},
+  {n:'Style Sport Blue',              h:'#1040A0',c:'',        f:'solid'},
+  {n:'Rallye Dakar Yellow',           h:'#E8C020',c:'',        f:'solid'},
+  {n:'Sapphire Black Metallic',       h:'#141820',c:'',        f:'metallic'},
+  {n:'Polarix Silver Metallic',       h:'#A8ACAE',c:'',        f:'metallic'}
+],
+'TRIUMPH':[
+  {n:'Carnival Red',                  h:'#B01020',c:'',        f:'solid'},
+  {n:'Matt Phantom Black',            h:'#1A1A1A',c:'',        f:'matte'},
+  {n:'Korosi Red / Storm Grey',       h:'#9A1820',c:'',        f:'solid'},
+  {n:'Jet Black',                     h:'#0A0A0A',c:'',        f:'solid'},
+  {n:'Matt Jet Black',                h:'#1A1A1A',c:'',        f:'matte'},
+  {n:'Cobalt Blue',                   h:'#103070',c:'',        f:'metallic'},
+  {n:'Chrome / Silver Ice',           h:'#C0C4C8',c:'',        f:'specialty'},
+  {n:'Korosi Red',                    h:'#9A1028',c:'',        f:'solid'},
+  {n:'Competition Green',             h:'#1C4020',c:'',        f:'solid'},
+  {n:'Silver Ice',                    h:'#C8CCCE',c:'',        f:'metallic'}
+],
+'INDIAN MOTORCYCLE':[
+  {n:'Crimson Metallic / Thunder Black Smoke', h:'#900010',c:'',f:'metallic'},
+  {n:'Spirit Blue',                   h:'#003080',c:'',        f:'metallic'},
+  {n:'Black Smoke',                   h:'#1A1A1A',c:'',        f:'metallic'},
+  {n:'White Smoke',                   h:'#E8E4DC',c:'',        f:'solid'},
+  {n:'Burgundy Metallic',             h:'#600028',c:'',        f:'metallic'},
+  {n:'Stealth Gray',                  h:'#606468',c:'',        f:'metallic'},
+  {n:'Indy Red',                      h:'#A00010',c:'',        f:'solid'},
+  {n:'Thunder Black Smoke',           h:'#141414',c:'',        f:'metallic'},
+  {n:'Turquoise Metallic',            h:'#006878',c:'',        f:'metallic'},
+  {n:'Golden Tan Smoke',              h:'#B09060',c:'',        f:'metallic'}
+],
+'KTM':[
+  {n:'Orange',                        h:'#E85000',c:'',        f:'solid'},
+  {n:'Black',                         h:'#141414',c:'',        f:'solid'},
+  {n:'White',                         h:'#F0EEE8',c:'',        f:'solid'},
+  {n:'Petrol Blue',                   h:'#005080',c:'',        f:'solid'},
+  {n:'Gray',                          h:'#646668',c:'',        f:'solid'},
+  {n:'Tech Orange',                   h:'#E06000',c:'',        f:'solid'},
+  {n:'Evo Orange',                    h:'#D05800',c:'',        f:'solid'},
+  {n:'Race White',                    h:'#ECEAE0',c:'',        f:'solid'},
+  {n:'Matn Black',                    h:'#1C1C1C',c:'',        f:'matte'},
+  {n:'Factory Blue/Orange',           h:'#0040A0',c:'',        f:'solid'}
+]
+};
+
+// ═══════════════════════════════════════════════════════════════
+// CUSTOM / NON-OEM WRAP COLORS
+// ═══════════════════════════════════════════════════════════════
+var WRAP_COLORS = [
+  {n:'Gloss Black',       h:'#1A1A1A',f:'solid'},
+  {n:'Matte Black',       h:'#2D2D2D',f:'matte'},
+  {n:'Satin Black',       h:'#242424',f:'matte'},
+  {n:'Gloss White',       h:'#F5F5F0',f:'solid'},
+  {n:'Matte White',       h:'#E8E4DC',f:'matte'},
+  {n:'Pearl White',       h:'#EDE8DE',f:'pearl'},
+  {n:'Gloss Red',         h:'#C01A14',f:'solid'},
+  {n:'Matte Red',         h:'#A01010',f:'matte'},
+  {n:'Gloss Blue',        h:'#1A3C8A',f:'solid'},
+  {n:'Deep Navy',         h:'#0D1E3A',f:'metallic'},
+  {n:'Electric Blue',     h:'#0030C8',f:'solid'},
+  {n:'Gunmetal Gray',     h:'#505A60',f:'metallic'},
+  {n:'Brushed Aluminum',  h:'#A8AEBA',f:'specialty'},
+  {n:'Gold Metallic',     h:'#B09020',f:'metallic'},
+  {n:'Orange',            h:'#CC5000',f:'solid'},
+  {n:'Forest Green',      h:'#2A5A38',f:'metallic'},
+  {n:'Purple',            h:'#4A1878',f:'solid'},
+  {n:'Teal Metallic',     h:'#0A5858',f:'metallic'},
+  {n:'Rose Gold',         h:'#C89080',f:'metallic'},
+  {n:'Hot Pink',          h:'#C01470',f:'solid'}
+];
+
+// ═══════════════════════════════════════════════════════════════
+// FILM RECOMMENDATIONS BY FINISH TYPE
+// ═══════════════════════════════════════════════════════════════
+var FILMS = {
+  solid:[
+    {nm:'ORACAL 970RA Gloss/Matte',           note:'Best solid color match · 80+ finishes available',  ppf:2.20},
+    {nm:'3M 1080 / 2080 Series',              note:'Widest solid color library · factory-match grade', ppf:4.50},
+    {nm:'RAXTiFY Cast Vinyl',                 note:'Budget-friendly solid colors · ideal for partials',ppf:0.80}
+  ],
+  metallic:[
+    {nm:'ORACAL 970RA Metallic Series',       note:'1080+ metallic finishes · excellent color depth',  ppf:2.20},
+    {nm:'Avery Dennison SW900 Supreme',       note:'Superior metallic accuracy · 7-yr warranty',       ppf:2.50},
+    {nm:'3M 2080 Metallic Series',            note:'Factory-matched metallics · premium cast',          ppf:4.50}
+  ],
+  pearl:[
+    {nm:'ORACAL 970RA Pearl / Color Flip',    note:'Color-shift & pearl effect films',                 ppf:2.20},
+    {nm:'Avery SW900 Gloss Metallic',         note:'Supreme pearl depth · top-coat ready',             ppf:2.50},
+    {nm:'3M 2080 Pearl / Satin Chrome',       note:'Premium tri-layer pearl matching',                 ppf:4.50}
+  ],
+  tricoat:[
+    {nm:'3M 2080 Tri-Layer Series',           note:'Best match for complex tri-coat OEM finishes',     ppf:4.50},
+    {nm:'Avery SW900 Supreme + Overlay',      note:'Gloss + pearl layering for deep tri-coat effect',  ppf:2.50}
+  ],
+  tintcoat:[
+    {nm:'3M 2080 Tinted Metallic',            note:'Closest match for OEM tintcoat finishes',          ppf:4.50},
+    {nm:'Avery SW900 Supreme',                note:'Color-depth layering for rich tintcoat look',       ppf:2.50}
+  ],
+  multicoat:[
+    {nm:'3M 2080 Series',                     note:'Premium multi-layer matching · Tesla-grade',        ppf:4.50},
+    {nm:'Avery SW900 Supreme',                note:'Excellent for multi-coat color-shift finishes',     ppf:2.50}
+  ],
+  specialty:[
+    {nm:'Chrome / Mirror Vinyl',              note:'Extreme mirror finish · specialty order via WPM',  ppf:6.00},
+    {nm:'3M 2080 Carbon / Brushed',           note:'Texture specialty films available in catalog',      ppf:4.50}
+  ],
+  matte:[
+    {nm:'ORACAL 970RA Matte / Satin',         note:'Premium matte finish · dead-flat options',          ppf:2.20},
+    {nm:'3M 2080 Matte Series',               note:'Factory-grade matte finishes',                      ppf:4.50}
+  ],
+  custom:[
+    {nm:'ORACAL 970RA (closest match)',       note:'80+ colors · most popular choice',                  ppf:2.20},
+    {nm:'3M 2080 (custom color match)',       note:'Color matching available on request via WPM',       ppf:4.50}
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════════
+// NHTSA VEHICLE LOOKUP
+// ═══════════════════════════════════════════════════════════════
+function initYears() {
+  var y = document.getElementById('selYear');
+  var cur = new Date().getFullYear();
+  for(var i=cur+1; i>=1981; i--) {
+    var o = document.createElement('option');
+    o.value = i; o.textContent = i; y.appendChild(o);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VEHICLE CATEGORY TOGGLE
+// ═══════════════════════════════════════════════════════════════
+function setVehicleCategory(cat) {
+  S.vehicleCategory = cat;
+  var isM = cat === 'moto';
+  document.getElementById('catAuto').classList.toggle('sel', !isM);
+  document.getElementById('catMoto').classList.toggle('sel', isM);
+  document.getElementById('autoBodyRow').style.display = isM ? 'none' : '';
+  document.getElementById('motoBodyRow').style.display = isM ? '' : 'none';
+  document.getElementById('step1Title').textContent = isM ? '🏍️ Select Your Motorcycle' : '🚗 Select Your Vehicle';
+  // Reset selectors
+  var mk = document.getElementById('selMake');
+  var mo = document.getElementById('selModel');
+  mk.innerHTML = '<option value="">— Choose Make —</option>'; mk.disabled = true;
+  mo.innerHTML = '<option value="">— Choose Model —</option>'; mo.disabled = true;
+  S.make = ''; S.model = '';
+  if(isM) {
+    S.bodyStyle = 'moto_cruiser';
+    document.getElementById('selMotoBody').value = 'moto_cruiser';
+  } else {
+    S.bodyStyle = 'sedan';
+    document.getElementById('selBody').value = 'sedan';
+  }
+  var yr = document.getElementById('selYear').value;
+  if(yr) loadMakes();
+  calcEst();
+}
+
+async function loadMakes() {
+  var yr = document.getElementById('selYear').value;
+  S.year = yr;
+  var mk = document.getElementById('selMake');
+  var mo = document.getElementById('selModel');
+  mk.innerHTML = '<option>Loading makes…</option>'; mk.disabled = true;
+  mo.innerHTML = '<option>— Choose Model —</option>'; mo.disabled = true;
+  if(!yr) return;
+  try {
+    var vtype = S.vehicleCategory === 'moto' ? 'motorcycle' : 'car';
+    var r = await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/'+vtype+'?year='+yr+'&format=json');
+    var d = await r.json();
+    var makes = d.Results.map(function(x){return x.MakeName;}).sort();
+    // For motorcycles add common brands if API misses any
+    if(S.vehicleCategory === 'moto') {
+      var extra = ['HARLEY-DAVIDSON','HONDA','KAWASAKI','YAMAHA','SUZUKI','DUCATI','BMW','TRIUMPH','INDIAN MOTORCYCLE','KTM','ROYAL ENFIELD','APRILIA','MOTO GUZZI'];
+      extra.forEach(function(b){ if(!makes.includes(b)) makes.push(b); });
+      makes.sort();
+    }
+    mk.innerHTML = '<option value="">— Choose Make —</option>';
+    makes.forEach(function(m){
+      var o = document.createElement('option'); o.value = m; o.textContent = m; mk.appendChild(o);
+    });
+    mk.disabled = false;
+  } catch(e) {
+    mk.innerHTML = '<option>Error loading makes — check connection</option>';
+  }
+}
+
+async function loadModels() {
+  var mk = document.getElementById('selMake').value;
+  S.make = mk;
+  var mo = document.getElementById('selModel');
+  mo.innerHTML = '<option>Loading models…</option>'; mo.disabled = true;
+  if(!mk) return;
+  try {
+    var r = await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/'+encodeURIComponent(mk)+'/modelyear/'+S.year+'?format=json');
+    var d = await r.json();
+    var models = d.Results.map(function(x){return x.Model_Name;}).sort();
+    mo.innerHTML = '<option value="">— Choose Model —</option>';
+    models.forEach(function(m){
+      var o = document.createElement('option'); o.value = m; o.textContent = m; mo.appendChild(o);
+    });
+    mo.disabled = false;
+    calcEst();
+  } catch(e) {
+    mo.innerHTML = '<option>Error loading models</option>';
+  }
+}
+
+function detectType() {
+  var model = document.getElementById('selModel').value;
+  S.model = model;
+  if(!model) return;
+  var ml = model.toLowerCase();
+
+  if(S.vehicleCategory === 'moto') {
+    // Auto-detect motorcycle style from model name
+    if(/gold wing|road king|road glide|street glide|electra glide|fjr|k1600|concours|venture/.test(ml)) setMotoBody('moto_touring');
+    else if(/cbr|r1|gsxr|gsx-r|ninja zx|yzf|panigale|fireblade|hp4|s1000rr/.test(ml)) setMotoBody('moto_sport');
+    else if(/mt-|z[0-9]|z 9|naked|duke|monster|fz-|sv650|xsr|cb650r|cb1000r|streetfighter/.test(ml)) setMotoBody('moto_naked');
+    else if(/africa twin|gs |r1200gs|r1250gs|adventure|super adventure|versys|v-strom|tiger|tracer|multistrada/.test(ml)) setMotoBody('moto_adventure');
+    else if(/chopper|bobber|custom|breakout|fat boy/.test(ml)) setMotoBody('moto_chopper');
+    else if(/dual sport|drz|crf|wr|exc|supermoto|husky/.test(ml)) setMotoBody('moto_dual');
+    else setMotoBody('moto_cruiser'); // default for Harley, Indian, etc.
+  } else {
+    if(/sedan|altima|camry|accord|civic|corolla|malibu|fusion|impala|maxima/.test(ml)) setBody('sedan');
+    else if(/coupe|mustang|camaro|challenger|charger|corvette|z4|86|brz/.test(ml)) setBody('coupe');
+    else if(/hatch|golf|impreza|focus st|mazda3|veloster/.test(ml)) setBody('hatchback');
+    else if(/f-150|silverado 1500|sierra 1500|ram 1500|tundra|tacoma|ranger|colorado|maverick|ridgeline/.test(ml)) setBody('suv');
+    else if(/f-250|f-350|silverado 2500|sierra 2500|ram 2500|ram 3500|titan/.test(ml)) setBody('fullsize');
+    else if(/explorer|escape|equinox|rav4|cr-v|highlander|traverse|pilot|atlas|tucson|sportage|rogue|cx-5/.test(ml)) setBody('suv');
+    else if(/suburban|expedition|tahoe|yukon|armada|sequoia|navigator|escalade/.test(ml)) setBody('fullsize');
+    else if(/odyssey|sienna|caravan|transit|sprinter|promaster/.test(ml)) setBody('van');
+  }
+  calcEst();
+  var msg = document.getElementById('v1msg');
+  if(S.year && S.make && S.model) {
+    var area = VA[S.bodyStyle]||VA.sedan;
+    msg.textContent = '✓ '+S.year+' '+S.make+' '+S.model+' selected — approx. '+area.total+' sq ft surface area.';
+    msg.classList.remove('hidden');
+  }
+}
+
+function setMotoBody(v) {
+  S.bodyStyle = v;
+  var el = document.getElementById('selMotoBody');
+  if(el) el.value = v;
+  calcEst();
+}
+
+function setBody(v) {
+  S.bodyStyle = v;
+  document.getElementById('selBody').value = v;
+  calcEst();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STEP NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+function goStep(n) {
+  [1,2,3,4].forEach(function(i){
+    document.getElementById('step'+i).classList.toggle('act', i===n);
+    var t = document.getElementById('stab'+i);
+    t.classList.remove('active','done');
+    if(i===n) t.classList.add('active');
+    else if(i<n) t.classList.add('done');
+  });
+  if(n===2) { buildSvcGrid(); buildMatGrid(); }
+  if(n===3) renderOEMGrid();
+  if(n===4) renderQuote();
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SERVICE + MATERIAL GRIDS
+// ═══════════════════════════════════════════════════════════════
+function buildSvcGrid() {
+  var g = document.getElementById('svcGrid');
+  g.innerHTML = '';
+  Object.entries(SVC).forEach(function(entry){
+    var k = entry[0], v = entry[1];
+    var d = document.createElement('div');
+    d.className = 'scard'+(k===S.service?' sel':'');
+    d.innerHTML = '<div class="sico">'+v.icon+'</div><div class="snm">'+v.name+'</div><div class="sds">'+v.desc+'</div>';
+    d.onclick = (function(key, el){
+      return function(){
+        S.service = key;
+        document.querySelectorAll('#svcGrid .scard').forEach(function(c){c.classList.remove('sel');});
+        el.classList.add('sel');
+        document.getElementById('dipsRow').classList.toggle('hidden', key!=='plastidip');
+        buildMatGrid();
+        calcEst();
+      };
+    })(k, d);
+    g.appendChild(d);
+  });
+}
+
+function buildMatGrid() {
+  var g = document.getElementById('matGrid');
+  g.innerHTML = '';
+  Object.entries(MAT).forEach(function(entry){
+    var k = entry[0], v = entry[1];
+    if(S.service==='plastidip' && k!=='spec_plastidip') return;
+    if(S.service!=='plastidip' && k==='spec_plastidip') return;
+    var d = document.createElement('div');
+    d.className = 'scard'+(k===S.material?' sel':'');
+    d.style = 'text-align:left;padding:11px 14px;';
+    var bc = v.badge==='Budget'?'badge-g':'badge-gold';
+    d.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">'
+      +'<div class="snm">'+v.name+'</div>'
+      +'<span class="badge '+bc+'">'+v.badge+'</span></div>'
+      +'<div class="sds">'+v.finish+' · '+v.warranty+' warranty</div>'
+      +'<div style="margin-top:5px;font-weight:700;color:var(--gold);font-size:13px;">$'+v.ppf+'/ft²</div>';
+    d.onclick = (function(key, el){
+      return function(){
+        S.material = key;
+        document.querySelectorAll('#matGrid .scard').forEach(function(c){c.classList.remove('sel');});
+        el.classList.add('sel');
+        calcEst();
+      };
+    })(k, d);
+    g.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// OEM COLOR PICKER
+// ═══════════════════════════════════════════════════════════════
+function renderOEMGrid() {
+  var makeKey = (S.make||'').toUpperCase();
+  var el = document.getElementById('oemMakeName');
+  if(el) el.textContent = S.make||'your vehicle';
+
+  var colors = OEM[makeKey]||null;
+  var grid = document.getElementById('oemGrid');
+  grid.innerHTML = '';
+
+  if(!colors) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--muted);font-size:12px;">'
+      +'OEM color data not available for <strong style="color:var(--text);">'+(S.make||'this make')+'</strong>.<br>'
+      +'Select <strong style="color:var(--gold);">Custom / Color Change</strong> above to pick from wrap colors.</div>';
+    showColorType('any', document.getElementById('ctab_any'));
+    return;
+  }
+
+  var search = (document.getElementById('colorSearch').value||'').toLowerCase();
+  var filtered = colors.filter(function(c){
+    return !search || c.n.toLowerCase().indexOf(search)!==-1 || c.f.toLowerCase().indexOf(search)!==-1;
+  });
+
+  var noneEl = document.getElementById('oemNone');
+  if(filtered.length===0) {
+    noneEl.classList.remove('hidden');
+    document.getElementById('oemNoneQ').textContent = search;
+    return;
+  } else {
+    noneEl.classList.add('hidden');
+  }
+
+  filtered.forEach(function(c){
+    var div = document.createElement('div');
+    div.className = 'oem-card'+(S.colorName===c.n?' sel':'');
+    div.innerHTML = '<div class="oem-swatch" style="background:'+c.h+';"></div>'
+      +'<div class="oem-nm">'+c.n+'</div>'
+      +'<div class="oem-ft">'+c.f+(c.c?' · '+c.c:'')+'</div>';
+    div.onclick = (function(color){
+      return function(){ selectColor(color.n, color.h, color.f, color.c||'', 'oem'); };
+    })(c);
+    grid.appendChild(div);
+  });
+}
+
+function filterOEM() { renderOEMGrid(); }
+
+function renderWrapGrid() {
+  var grid = document.getElementById('wrapGrid');
+  grid.innerHTML = '';
+  WRAP_COLORS.forEach(function(c){
+    var div = document.createElement('div');
+    div.className = 'wrap-card'+(S.colorName===c.n?' sel':'');
+    div.innerHTML = '<div class="wrap-swatch" style="background:'+c.h+';"></div>'
+      +'<div class="wrap-nm">'+c.n+'</div>';
+    div.onclick = (function(color){
+      return function(){ selectColor(color.n, color.h, color.f, '', 'wrap'); };
+    })(c);
+    grid.appendChild(div);
+  });
+}
+
+function showColorType(type, btn) {
+  document.querySelectorAll('[id^="ctab_"]').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  document.getElementById('oemSection').classList.toggle('hidden', type!=='oem');
+  document.getElementById('anySection').classList.toggle('hidden', type!=='any');
+  if(type==='any') renderWrapGrid();
+  S.colorType = type;
+}
+
+function selectColor(name, hex, finish, code, type) {
+  S.colorName = name; S.colorHex = hex; S.colorFinish = finish;
+  S.colorCode = code||''; S.colorType = type;
+
+  document.querySelectorAll('.oem-card').forEach(function(c){
+    var nm = c.querySelector('.oem-nm');
+    c.classList.toggle('sel', nm && nm.textContent===name);
+  });
+  document.querySelectorAll('.wrap-card').forEach(function(c){
+    var nm = c.querySelector('.wrap-nm');
+    c.classList.toggle('sel', nm && nm.textContent===name);
+  });
+
+  var panel = document.getElementById('selColorPanel');
+  panel.classList.remove('hidden');
+  document.getElementById('selColorSwatch').style.background = hex;
+  document.getElementById('selColorName').textContent = name;
+  document.getElementById('selColorCode').textContent = code ? 'Paint Code: '+code : '';
+  document.getElementById('selColorFinish').textContent = finish+' finish · '+filmLabel(finish);
+
+  var recs = FILMS[finish]||FILMS.custom;
+  var list = document.getElementById('filmRecList');
+  list.innerHTML = '';
+  recs.forEach(function(f){
+    var row = document.createElement('div');
+    row.className = 'film-row';
+    row.innerHTML = '<div style="flex:1;">'
+      +'<div style="font-size:12px;font-weight:700;">'+f.nm+'</div>'
+      +'<div style="font-size:11px;color:var(--muted);">'+f.note+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;flex-shrink:0;margin-left:12px;">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--gold);">$'+f.ppf+'/ft²</div>'
+      +'<a href="https://eb5dv8-uq.myshopify.com" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;">WPM Catalog →</a>'
+      +'</div>';
+    list.appendChild(row);
+  });
+
+  updateSBColor();
+  calcEst();
+}
+
+function pickCustomColor(hex) {
+  selectColor('Custom Color', hex, 'custom', '', 'custom');
+}
+
+function filmLabel(finish) {
+  var map = {solid:'vinyl film',metallic:'metallic vinyl',pearl:'pearl vinyl',
+    tricoat:'tri-coat vinyl',tintcoat:'tintcoat vinyl',multicoat:'multi-coat vinyl',
+    specialty:'specialty film',matte:'matte vinyl',custom:'wrap film'};
+  return map[finish]||'vinyl film';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ESTIMATE CALCULATOR
+// ═══════════════════════════════════════════════════════════════
+function calcEst() {
+  var area = VA[S.bodyStyle]||VA.sedan;
+  var mat  = MAT[S.material]||MAT.mid_oracal;
+  var svc  = SVC[S.service]||SVC.full_vinyl;
+  var sqft = 0;
+  if(S.service==='full_vinyl'||S.service==='color_chg') sqft = area.total;
+  else if(S.service==='partial')  sqft = Math.round(area.total*0.38);
+  else if(S.service==='graphics') sqft = Math.round(area.total*0.20);
+  else if(S.service==='ppf')      sqft = Math.round(area.total*0.60);
+  else if(S.service==='plastidip') sqft = area.total;
+  var matCost = 0;
+  if(S.service==='plastidip') {
+    var gals = Math.ceil((sqft*S.dipCoats)/350);
+    matCost = gals*38;
+  } else {
+    matCost = sqft*mat.ppf;
+  }
+  // Motorcycles: lower labor base but 1.4× complexity multiplier (curves, gas tank, tight panels)
+  var labor = svc.labor;
+  if(S.vehicleCategory === 'moto') {
+    var motoLabor = {full_vinyl:350, partial:180, color_chg:420, graphics:200, plastidip:280, ppf:600};
+    labor = motoLabor[S.service] || 350;
+    matCost = matCost * 1.4; // complexity surcharge for curved surfaces
+  }
+  var install = 0.08*(matCost+labor);
+  var total   = matCost+labor+install;
+  S._est = {sqft:sqft,matCost:matCost,labor:labor,install:install,total:total,days:svc.days,mat:mat,svc:svc};
+  updateSidebar(S._est);
+}
+
+function updateSidebar(e) {
+  document.getElementById('sbTotal').textContent = '$'+Math.round(e.total).toLocaleString();
+  document.getElementById('sbRows').innerHTML =
+    '<div class="est-row"><span>Material ('+e.sqft+' ft²)</span><span>$'+Math.round(e.matCost).toLocaleString()+'</span></div>'
+    +'<div class="est-row"><span>Labor</span><span>$'+e.labor.toLocaleString()+'</span></div>'
+    +'<div class="est-row"><span>Install / Overhead</span><span>$'+Math.round(e.install).toLocaleString()+'</span></div>';
+  var bodyLabels = {
+    sedan:'Sedan',coupe:'Coupe',hatchback:'Hatchback',wagon:'Wagon',suv:'SUV/Truck',fullsize:'Full-Size SUV',van:'Van',
+    moto_cruiser:'Cruiser',moto_sport:'Sport',moto_naked:'Naked/Standard',moto_adventure:'Adventure',
+    moto_touring:'Touring',moto_chopper:'Chopper',moto_dual:'Dual-Sport'
+  };
+  document.getElementById('sbVehicle').textContent =
+    (S.year&&S.make&&S.model) ? S.year+' '+S.make+' '+S.model+' · '+(bodyLabels[S.bodyStyle]||S.bodyStyle) : 'Select a vehicle above';
+  document.getElementById('sbTime').textContent = 'Est. '+e.days+' business days · WPM Wolf Pack Catalog';
+  updateSBColor();
+}
+
+function updateSBColor() {
+  var sb = document.getElementById('sbColor');
+  if(S.colorHex) {
+    sb.innerHTML = '<div style="width:18px;height:18px;border-radius:4px;background:'+S.colorHex+';flex-shrink:0;border:1px solid rgba(255,255,255,.2);"></div>'
+      +'<span>'+(S.colorName||'Custom')+'</span>';
+  } else {
+    sb.innerHTML = '';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// QUOTE — STEP 4
+// ═══════════════════════════════════════════════════════════════
+function renderQuote() {
+  if(!S._est) calcEst();
+  var e = S._est;
+  var color = S.colorName||'Not selected';
+  var dot = S.colorHex
+    ? '<span style="display:inline-block;width:13px;height:13px;border-radius:3px;background:'+S.colorHex+';vertical-align:middle;margin-right:4px;border:1px solid rgba(255,255,255,.2);"></span>'
+    : '';
+
+  document.getElementById('quoteBody').innerHTML =
+    '<div style="background:var(--card);border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid var(--border);">'
+    +'<div style="font-size:12px;color:var(--muted);margin-bottom:10px;font-weight:700;">JOB DETAILS</div>'
+    +'<div class="qrow"><span>Vehicle</span><span>'+(S.year||'—')+' '+(S.make||'—')+' '+(S.model||'—')+'</span></div>'
+    +'<div class="qrow"><span>Body Style</span><span style="text-transform:capitalize;">'+S.bodyStyle+'</span></div>'
+    +'<div class="qrow"><span>Service</span><span>'+e.svc.name+'</span></div>'
+    +'<div class="qrow"><span>Color</span><span>'+dot+color+'</span></div>'
+    +'<div class="qrow"><span>Finish</span><span style="text-transform:capitalize;">'+S.colorFinish+'</span></div>'
+    +(S.colorCode ? '<div class="qrow"><span>Paint Code</span><span>'+S.colorCode+'</span></div>' : '')
+    +'<div class="qrow"><span>Material</span><span>'+e.mat.name+'</span></div>'
+    +'<div class="qrow"><span>Warranty</span><span>'+e.mat.warranty+'</span></div>'
+    +'<div class="qrow"><span>Surface Area</span><span>'+e.sqft+' ft²</span></div>'
+    +'</div>'
+    +'<div style="background:var(--card);border-radius:10px;padding:16px;border:1px solid var(--border);">'
+    +'<div style="font-size:12px;color:var(--muted);margin-bottom:10px;font-weight:700;">PRICING BREAKDOWN</div>'
+    +'<div class="qrow"><span>Material Cost</span><span>$'+Math.round(e.matCost).toLocaleString()+'</span></div>'
+    +'<div class="qrow"><span>Labor</span><span>$'+e.labor.toLocaleString()+'</span></div>'
+    +'<div class="qrow"><span>Installation &amp; Overhead</span><span>$'+Math.round(e.install).toLocaleString()+'</span></div>'
+    +'<div class="qrow"><span>ESTIMATED TOTAL</span><span>$'+Math.round(e.total).toLocaleString()+'</span></div>'
+    +'<div style="margin-top:12px;font-size:11px;color:var(--muted);">'
+    +'⏱ Estimated timeline: <strong style="color:var(--text);">'+e.days+' business days</strong><br>'
+    +'📦 Materials ordered through WPM Wolf Pack Catalog<br>'
+    +'⚠️ Prices are estimates. Final quote issued after vehicle inspection.'
+    +'</div></div>';
+
+  var recs = FILMS[S.colorFinish]||FILMS.solid;
+  document.getElementById('supplierList').innerHTML = recs.map(function(f){
+    return '<div class="film-row" style="margin-bottom:8px;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;">'+f.nm+'</div>'
+      +'<div style="font-size:11px;color:var(--muted);margin-top:2px;">'+f.note+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;flex-shrink:0;margin-left:12px;">'
+      +'<div style="font-size:14px;font-weight:700;color:var(--gold);">$'+f.ppf+'/ft²</div>'
+      +'<a href="https://eb5dv8-uq.myshopify.com" target="_blank" '
+      +'style="display:inline-block;margin-top:4px;padding:4px 10px;background:rgba(212,175,55,.15);border:1px solid var(--gold);border-radius:6px;color:var(--gold);text-decoration:none;font-size:11px;font-weight:700;">'
+      +'Order via WPM →</a></div></div>';
+  }).join('');
+}
+
+function openCatalog() {
+  window.open('https://eb5dv8-uq.myshopify.com','_blank');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AI ASSISTANT — WOLF
+// ═══════════════════════════════════════════════════════════════
+function toggleAI() {
+  var box = document.getElementById('aiBox');
+  box.style.display = box.style.display==='block'?'none':'block';
+}
+function closeAI() { document.getElementById('aiBox').style.display='none'; }
+
+function sendAI() {
+  var inp = document.getElementById('aiIn');
+  var q = inp.value.trim(); if(!q) return;
+  addMsg(q,'usr'); inp.value='';
+  setTimeout(function(){ addMsg(wolfReply(q),'bot'); }, 400);
+}
+
+function addMsg(txt,cls) {
+  var msgs = document.getElementById('aiMsgs');
+  var d = document.createElement('div'); d.className='msg '+cls; d.textContent=txt;
+  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function wolfReply(q) {
+  var ql = q.toLowerCase();
+  if(/price|cost|how much|quote|estimate/.test(ql)) {
+    var e = S._est;
+    if(e) return 'Based on your '+S.year+' '+S.make+' '+S.model+', I estimate around $'+Math.round(e.total).toLocaleString()+' for a '+(SVC[S.service]&&SVC[S.service].name||'wrap')+' with '+(MAT[S.material]&&MAT[S.material].name||'standard film')+'. That’s a ballpark — final pricing after inspection.';
+    return 'I need your vehicle and service info first! Go back to Step 1, select your year, make, and model, and I can run the numbers.';
+  }
+  if(/color|oem|paint|factory|manufacture/.test(ql)) {
+    if(S.colorName) return 'You picked '+S.colorName+' ('+S.colorFinish+' finish). I’ve pulled up the best wrap films for that finish type — check the film recommendations on Step 3. All orders through WPM Wolf Pack Catalog!';
+    return 'Head to Step 3 to pick from your vehicle’s factory OEM colors. We show the manufacturer’s actual paint palette so you can match or switch your color with precision.';
+  }
+  if(/material|film|vinyl|3m|oracal|avery|raxtify|chrome/.test(ql)) {
+    return 'Our supplier lineup runs from RAXTiFY Economy at $0.80/ft² all the way up to Chrome/Mirror at $6.00/ft². ORACAL 970RA at $2.20/ft² is our most popular — great quality, 5-7yr warranty, 80+ finishes. All ordered through WPM Wolf Pack Catalog.';
+  }
+  if(/time|long|days|schedule|appointment/.test(ql)) {
+    var d = SVC[S.service]&&SVC[S.service].days||'3-5';
+    return 'For a '+(SVC[S.service]&&SVC[S.service].name||'standard wrap')+', we estimate '+d+' business days. Color changes and full wraps run longer. Contact MoJo Motoworks to lock in your appointment.';
+  }
+  if(/warranty|last|durability|long will/.test(ql)) {
+    var m = MAT[S.material];
+    if(m) return m.name+' carries a '+m.warranty+' warranty. Premium cast like 3M 2080 lasts 8-10 years with proper care. Plasti-Dip is fully removable — lifespan varies by climate and coating thickness.';
+    return 'Warranties range from 3 years (economy vinyl) to 8-10 years for 3M 2080. Pick your material in Step 2 and I’ll give you the exact specs.';
+  }
+  if(/chrome|mirror/.test(ql)) return 'Chrome Mirror vinyl is $6.00/ft² — a specialty film with a full mirror finish. Stunning look, 2-3yr warranty. Available through WPM Wolf Pack Catalog!';
+  if(/plastidip|dip|plasti/.test(ql)) return 'Plasti-Dip is a rubber coating — fully removable. We do 3-5 coats at $38/gallon. Great for temporary color experiments. Select Plasti-Dip as your service type in Step 2.';
+  if(/partial|hood|roof|mirror|accent/.test(ql)) return 'A partial wrap covers about 38% of the surface area — typically hood, roof, and mirrors. Great way to add personality without a full-wrap cost. Usually done in 1-2 days.';
+  if(/ppf|paint protection|clear film|rock chip/.test(ql)) return 'Paint Protection Film (PPF) is a clear film that shields against rock chips, scratches, and UV. We recommend it for the hood and front bumper especially. Runs $4.50/ft²+ and takes 3-5 days.';
+  if(/wpm|wolf pack|catalog|order|supplier/.test(ql)) return 'All wrap materials come through WPM Wolf Pack Catalog at eb5dv8-uq.myshopify.com — consistent pricing and quality guaranteed. You’ll see direct “Order via WPM” links on the Quote step.';
+  if(/hello|hi|hey|help|start/.test(ql)) return 'Hey! I’m Wolf 🐺 — your MoJo Wrap Studio guide. Ask me about pricing, film options, OEM colors, timelines, or anything wrap-related. What’s on your mind?';
+  return 'Great question! I’m your MoJo wrap expert. Try asking about pricing, colors, vinyl materials, timelines, or how to order through WPM. Or step through the wizard above to build your custom quote!';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+(function init(){
+  initYears();
+  buildSvcGrid();
+  buildMatGrid();
+  calcEst();
+})();
+</script>
+</body>
+</html>

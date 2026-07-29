@@ -29,7 +29,7 @@
     min-height: 100vh;
   }
 
-  /* ââ HEADER ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ HEADER Ã¢ÂÂÃ¢ÂÂ */
   header {
     background: var(--dark);
     border-bottom: 1px solid var(--border);
@@ -78,7 +78,7 @@
   }
   .nav-cta:hover { background: #00d4ff !important; color: var(--navy) !important; }
 
-  /* ââ HERO ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ HERO Ã¢ÂÂÃ¢ÂÂ */
   .hero {
     min-height: 520px;
     background:
@@ -154,7 +154,7 @@
   }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ââ STATS BAR ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ STATS BAR Ã¢ÂÂÃ¢ÂÂ */
   .stats-bar {
     background: var(--panel);
     border-top: 1px solid var(--border);
@@ -169,7 +169,7 @@
   .stat-num { font-size: 1.8rem; font-weight: 900; color: var(--accent); }
   .stat-label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 
-  /* ââ SECTIONS ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ SECTIONS Ã¢ÂÂÃ¢ÂÂ */
   section { padding: 5rem 2rem; }
   .section-inner { max-width: 1100px; margin: 0 auto; }
   .section-tag {
@@ -183,7 +183,7 @@
   }
   .section-sub { color: var(--muted); max-width: 560px; margin-bottom: 3rem; }
 
-  /* ââ DIVISION CARDS ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ DIVISION CARDS Ã¢ÂÂÃ¢ÂÂ */
   .divisions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -219,7 +219,7 @@
   }
   .division-card.services .card-link { color: var(--accent2); }
 
-  /* ââ CATALOG PREVIEW ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ CATALOG PREVIEW Ã¢ÂÂÃ¢ÂÂ */
   .catalog-section { background: var(--dark); }
   .products-grid {
     display: grid;
@@ -247,7 +247,7 @@
   .product-price { font-size: 1rem; font-weight: 800; color: var(--accent); }
   #catalog-loading { color: var(--muted); text-align: center; padding: 3rem; }
 
-  /* ââ SERVICES GRID ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ SERVICES GRID Ã¢ÂÂÃ¢ÂÂ */
   .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -268,7 +268,7 @@
   .service-name { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
   .service-desc { font-size: 0.83rem; color: var(--muted); }
 
-  /* ââ CHARITY BANNER ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ CHARITY BANNER Ã¢ÂÂÃ¢ÂÂ */
   .charity-banner {
     background: linear-gradient(135deg, rgba(0,170,85,0.1), rgba(200,160,0,0.05));
     border: 1px solid rgba(0,170,85,0.3);
@@ -280,7 +280,7 @@
   .charity-text h3 { color: var(--white); font-size: 1.1rem; margin-bottom: 0.4rem; }
   .charity-text p { color: var(--muted); font-size: 0.85rem; }
 
-  /* ââ FOOTER ââ */
+  /* Ã¢ÂÂÃ¢ÂÂ FOOTER Ã¢ÂÂÃ¢ÂÂ */
   footer {
     background: var(--dark);
     border-top: 1px solid var(--border);
@@ -320,6 +320,21 @@
     .footer-top { grid-template-columns: 1fr 1fr; }
     .stats-inner { gap: 1.5rem; }
   }
+
+  /* THRIVE / LE-VEL SECTION */
+  .wellness-section { background: linear-gradient(180deg, var(--dark) 0%, #0a1a0a 100%); border-top: 1px solid rgba(0,170,85,0.3); }
+  .thrive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1.5rem; margin: 2.5rem 0; }
+  .thrive-card { background: var(--panel); border: 1px solid rgba(0,170,85,0.25); border-radius: 8px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.2s; }
+  .thrive-card:hover { border-color: rgba(0,170,85,0.6); }
+  .thrive-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: #00aa55; }
+  .thrive-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+  .thrive-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+  .thrive-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 1rem; }
+  .thrive-btn { display: inline-block; background: rgba(0,170,85,0.15); border: 1px solid rgba(0,170,85,0.4); color: #00aa55; font-size: 0.78rem; font-weight: 700; padding: 6px 14px; border-radius: 4px; text-decoration: none; letter-spacing: 0.5px; transition: background 0.2s; }
+  .thrive-btn:hover { background: rgba(0,170,85,0.3); }
+  .thrive-cta-block { background: rgba(0,170,85,0.07); border: 1px solid rgba(0,170,85,0.2); border-radius: 12px; padding: 2.5rem 2rem; text-align: center; margin-top: 2rem; }
+  .thrive-cta-block h3 { font-size: 1.4rem; font-weight: 800; color: var(--white); margin-bottom: 0.75rem; }
+  .thrive-cta-block p { color: var(--muted); font-size: 0.88rem; max-width: 520px; margin: 0 auto 1.5rem; }
 </style>
 </head>
 <body>
@@ -343,9 +358,9 @@
 
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-badge">Wolf Pack Â· Est. 2020</div>
+    <div class="hero-badge">Wolf Pack ÃÂ· Est. 2020</div>
     <h1>Precision Systems.<br><span>Wolf Pack</span> Precision.</h1>
-    <p>WPM Management Systems delivers logistics, robotics, automotive, and eco-resource services â built on a foundation of military discipline and veteran values.</p>
+    <p>WPM Management Systems delivers logistics, robotics, automotive, and eco-resource services Ã¢ÂÂ built on a foundation of military discipline and veteran values.</p>
     <div class="hero-btns">
       <a href="#goods" class="btn-primary">Explore Products</a>
       <a href="#services" class="btn-outline">Our Services</a>
@@ -358,28 +373,28 @@
     <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Years Experience</div></div>
     <div class="stat"><div class="stat-num">5</div><div class="stat-label">Divisions</div></div>
     <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Veteran Owned</div></div>
-    <div class="stat"><div class="stat-num">â</div><div class="stat-label">Wolf Pack Loyalty</div></div>
+    <div class="stat"><div class="stat-num">Ã¢ÂÂ</div><div class="stat-label">Wolf Pack Loyalty</div></div>
   </div>
 </div>
 
 <!-- GOODS -->
 <section id="goods">
   <div class="section-inner">
-    <div class="section-tag">â¸ Goods Division</div>
+    <div class="section-tag">Ã¢ÂÂ¸ Goods Division</div>
     <h2 class="section-title">Products &amp; Catalog</h2>
-    <p class="section-sub">From eco-resource innovations to cutting-edge robotics and electronics â all stocked in the Wolf Pack Catalog.</p>
+    <p class="section-sub">From eco-resource innovations to cutting-edge robotics and electronics Ã¢ÂÂ all stocked in the Wolf Pack Catalog.</p>
     <div class="divisions">
       <a href="#catalog" class="division-card goods">
-        <div class="card-icon">ð¿</div>
+        <div class="card-icon">Ã°ÂÂÂ¿</div>
         <div class="card-title">Eco Products</div>
         <div class="card-desc">Renewable-resource goods, sustainable materials, and eco-service solutions for residential and commercial clients.</div>
-        <span class="card-link">Browse Eco Catalog â</span>
+        <span class="card-link">Browse Eco Catalog Ã¢ÂÂ</span>
       </a>
       <a href="#catalog" class="division-card goods">
-        <div class="card-icon">ð¤</div>
+        <div class="card-icon">Ã°ÂÂ¤Â</div>
         <div class="card-title">Robotics &amp; Electronics</div>
-        <div class="card-desc">Custom drones, build kits, precision electronics, and robotics components â sourced and configured by WPM.</div>
-        <span class="card-link">Browse Robotics â</span>
+        <div class="card-desc">Custom drones, build kits, precision electronics, and robotics components Ã¢ÂÂ sourced and configured by WPM.</div>
+        <span class="card-link">Browse Robotics Ã¢ÂÂ</span>
       </a>
     </div>
   </div>
@@ -388,10 +403,10 @@
 <!-- CATALOG PREVIEW -->
 <section id="catalog" class="catalog-section">
   <div class="section-inner">
-    <div class="section-tag">â¸ Wolf Pack Catalog</div>
+    <div class="section-tag">Ã¢ÂÂ¸ Wolf Pack Catalog</div>
     <h2 class="section-title">Featured Products</h2>
-    <p class="section-sub">Live inventory from the Wolf Pack Catalog â updated in real time.</p>
-    <div id="catalog-loading">Loading catalogâ¦</div>
+    <p class="section-sub">Live inventory from the Wolf Pack Catalog Ã¢ÂÂ updated in real time.</p>
+    <div id="catalog-loading">Loading catalogÃ¢ÂÂ¦</div>
     <div class="products-grid" id="products-grid" style="display:none"></div>
     <div style="text-align:center;margin-top:1rem">
       <a href="https://eb5dv8-uq.myshopify.com" target="_blank" class="btn-primary">View Full Catalog</a>
@@ -402,29 +417,29 @@
 <!-- SERVICES -->
 <section id="services">
   <div class="section-inner">
-    <div class="section-tag">â¸ Services Division</div>
+    <div class="section-tag">Ã¢ÂÂ¸ Services Division</div>
     <h2 class="section-title">Services</h2>
     <p class="section-sub">Professional services delivered with military precision across automotive, aviation, and home improvement sectors.</p>
     <div class="services-grid">
       <a href="pages/mojo-wrap-studio.html" class="service-card">
-        <div class="service-icon">ð¨</div>
+        <div class="service-icon">Ã°ÂÂÂ¨</div>
         <div class="service-name">MoJo Wrap Studio</div>
         <div class="service-desc">Custom vehicle wraps for cars, trucks, SUVs, and motorcycles. Get an instant quote powered by our AI estimator.</div>
       </a>
       <a href="pages/handymanzz.html" class="service-card">
-        <div class="service-icon">ð§</div>
-        <div class="service-name">HandymÃ¤nz</div>
-        <div class="service-desc">Professional home services â repairs, installations, renovations, and maintenance. Licensed and insured.</div>
+        <div class="service-icon">Ã°ÂÂÂ§</div>
+        <div class="service-name">HandymÃÂ¤nz</div>
+        <div class="service-desc">Professional home services Ã¢ÂÂ repairs, installations, renovations, and maintenance. Licensed and insured.</div>
       </a>
       <a href="pages/aeromed.html" class="service-card">
-        <div class="service-icon">ð</div>
+        <div class="service-icon">Ã°ÂÂÂ</div>
         <div class="service-name">WPM Aeromed</div>
         <div class="service-desc">Aerial medical support, UAV logistics, and drone-based emergency response solutions.</div>
       </a>
       <a href="wpm-build-a-drone.html" class="service-card">
-        <div class="service-icon">ð¸</div>
+        <div class="service-icon">Ã°ÂÂÂ¸</div>
         <div class="service-name">Custom Drone Build</div>
-        <div class="service-desc">Configure your own WPM drone from the ground up â choose airframe, payload, and flight controller.</div>
+        <div class="service-desc">Configure your own WPM drone from the ground up Ã¢ÂÂ choose airframe, payload, and flight controller.</div>
       </a>
     </div>
   </div>
@@ -435,9 +450,9 @@
   <div class="section-inner">
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; flex-wrap:wrap">
       <div>
-        <div class="section-tag">â¸ MoJo Wrap Studio Â· Powered by WPM</div>
+        <div class="section-tag">Ã¢ÂÂ¸ MoJo Wrap Studio ÃÂ· Powered by WPM</div>
         <h2 class="section-title">Get Your Vehicle Wrapped</h2>
-        <p style="color:var(--muted); margin-bottom:2rem">Select your year, make, and model. Pick your OEM factory color or go custom. Get an instant quote in under 2 minutes â no salesperson, no games.</p>
+        <p style="color:var(--muted); margin-bottom:2rem">Select your year, make, and model. Pick your OEM factory color or go custom. Get an instant quote in under 2 minutes Ã¢ÂÂ no salesperson, no games.</p>
         <div style="display:flex; gap:1rem; flex-wrap:wrap">
           <a href="pages/mojo-wrap-studio.html" class="btn-primary">Launch Wrap Studio</a>
           <a href="pages/mojo-wrap-studio.html" class="btn-outline">View Pricing</a>
@@ -446,11 +461,11 @@
       <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:2rem">
         <div style="font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:1rem">Supported Vehicles</div>
         <div style="display:flex; flex-wrap:wrap; gap:0.5rem">
-          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">ð Cars</span>
-          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">ð Trucks</span>
-          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">ð SUVs &amp; Vans</span>
-          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">ðï¸ Motorcycles</span>
-          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">ðï¸ Sport &amp; Exotic</span>
+          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">Ã°ÂÂÂ Cars</span>
+          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">Ã°ÂÂÂ Trucks</span>
+          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">Ã°ÂÂÂ SUVs &amp; Vans</span>
+          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">Ã°ÂÂÂÃ¯Â¸Â Motorcycles</span>
+          <span style="background:rgba(0,191,255,0.08); border:1px solid var(--border); color:var(--text); font-size:0.75rem; padding:4px 10px; border-radius:3px">Ã°ÂÂÂÃ¯Â¸Â Sport &amp; Exotic</span>
         </div>
         <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--border)">
           <div style="font-size:0.75rem; color:var(--muted); margin-bottom:0.5rem">Wraps From</div>
@@ -465,12 +480,53 @@
 <section style="padding:3rem 2rem">
   <div class="section-inner">
     <div class="charity-banner">
-      <div class="charity-icon">ðï¸</div>
+      <div class="charity-icon">Ã°ÂÂÂÃ¯Â¸Â</div>
       <div class="charity-text">
         <h3>Giving Back to Those Who Served</h3>
-        <p>A portion of every WPM purchase supports the <strong style="color:var(--white)">WPM Veterans Initiative</strong> and the <strong style="color:var(--white)">David Titus Foundation</strong> â helping veterans build new careers and communities.</p>
+        <p>A portion of every WPM purchase supports the <strong style="color:var(--white)">WPM Veterans Initiative</strong> and the <strong style="color:var(--white)">David Titus Foundation</strong> Ã¢ÂÂ helping veterans build new careers and communities.</p>
       </div>
       <a href="https://eb5dv8-uq.myshopify.com" target="_blank" class="btn-outline" style="flex-shrink:0">Shop &amp; Give</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- HEALTH & WELLNESS / THRIVE BY LE-VEL -->
+<section id="wellness" class="wellness-section">
+  <div class="section-inner">
+    <div class="section-tag">&#9733; Health &amp; Wellness</div>
+    <h2 class="section-title">Thrive by Le-Vel</h2>
+    <p class="section-sub">Premium lifestyle supplements and wellness products &mdash; powered by Le-Vel&apos;s science-backed Thrive Experience. WPM proudly partners with Le-Vel to bring peak health solutions to the Wolf Pack community.</p>
+    <div class="thrive-grid">
+      <div class="thrive-card">
+        <div class="thrive-icon">&#128138;</div>
+        <h4>Thrive Capsules</h4>
+        <p>Premium vitamins, minerals, plant extracts, antioxidants, enzymes, and probiotics formulated for a peak lifestyle &mdash; taken first thing in the morning.</p>
+        <a href="https://mistaone.le-vel.com/" target="_blank" rel="noopener" class="thrive-btn">Shop Thrive &#8594;</a>
+      </div>
+      <div class="thrive-card">
+        <div class="thrive-icon">&#127850;</div>
+        <h4>Thrive Shake Mix</h4>
+        <p>Ultra-micronized shake formula with 18&ndash;20g protein per serving. Meal replacement designed for sustained energy and muscle support.</p>
+        <a href="https://mistaone.le-vel.com/" target="_blank" rel="noopener" class="thrive-btn">Shop Thrive &#8594;</a>
+      </div>
+      <div class="thrive-card">
+        <div class="thrive-icon">&#129657;</div>
+        <h4>DFT Patch</h4>
+        <p>Le-Vel&apos;s Derma Fusion Technology &mdash; wearable nutrition delivering a unique premium formula through the skin all day long.</p>
+        <a href="https://mistaone.le-vel.com/" target="_blank" rel="noopener" class="thrive-btn">Shop Thrive &#8594;</a>
+      </div>
+      <div class="thrive-card">
+        <div class="thrive-icon">&#9889;</div>
+        <h4>Thrive MOVE</h4>
+        <p>Joint support, cognitive function, and mental clarity &mdash; designed for active lifestyles and those who demand more from every day.</p>
+        <a href="https://mistaone.le-vel.com/" target="_blank" rel="noopener" class="thrive-btn">Shop Thrive &#8594;</a>
+      </div>
+    </div>
+    <div class="thrive-cta-block">
+      <h3>Start Your Thrive Experience</h3>
+      <p>All Health &amp; Wellness orders are processed securely through Le-Vel&apos;s platform &mdash; fast shipping, 100% satisfaction guaranteed.</p>
+      <a href="https://mistaone.le-vel.com/" target="_blank" rel="noopener" class="btn-primary">Visit mistaone.le-vel.com &#8594;</a>
     </div>
   </div>
 </section>
@@ -486,7 +542,7 @@
             <div class="logo-sub">WPM Management Systems</div>
           </div>
         </a>
-        <p>Veteran-owned, precision-focused. WPM delivers goods and services across five divisions â built on discipline and driven by community.</p>
+        <p>Veteran-owned, precision-focused. WPM delivers goods and services across five divisions Ã¢ÂÂ built on discipline and driven by community.</p>
       </div>
       <div class="footer-col">
         <h4>Goods</h4>
@@ -498,7 +554,7 @@
       <div class="footer-col">
         <h4>Services</h4>
         <a href="pages/mojo-wrap-studio.html">MoJo Wrap Studio</a>
-        <a href="pages/handymanzz.html">HandymÃ¤nz</a>
+        <a href="pages/handymanzz.html">HandymÃÂ¤nz</a>
         <a href="pages/aeromed.html">WPM Aeromed</a>
         <a href="wpm-build-a-drone.html">Drone Build</a>
       </div>
@@ -510,7 +566,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>Â© 2024â2026 WPM Management Systems. All rights reserved.</p>
+      <p>ÃÂ© 2024Ã¢ÂÂ2026 WPM Management Systems. All rights reserved.</p>
       <div class="badge-row">
         <span class="badge">Veteran Owned</span>
         <span class="badge">Wolf Pack</span>
@@ -520,7 +576,7 @@
 </footer>
 
 <script>
-// Shopify Storefront API â Wolf Pack Catalog preview
+// Shopify Storefront API Ã¢ÂÂ Wolf Pack Catalog preview
 (async function() {
   const STORE = 'eb5dv8-uq.myshopify.com';
   const TOKEN = 'REPLACE_WITH_STOREFRONT_TOKEN'; // Add your public Storefront API token here
@@ -562,7 +618,7 @@
       const card = document.createElement('div');
       card.className = 'product-card';
       card.innerHTML = `
-        <div class="product-img">${p.featuredImage ? `<img src="${p.featuredImage.url}" style="width:100%;height:100%;object-fit:cover;border-radius:4px">` : 'ð¦'}</div>
+        <div class="product-img">${p.featuredImage ? `<img src="${p.featuredImage.url}" style="width:100%;height:100%;object-fit:cover;border-radius:4px">` : 'Ã°ÂÂÂ¦'}</div>
         <div class="product-name">${p.title}</div>
         <div class="product-price">$${price}</div>
       `;
